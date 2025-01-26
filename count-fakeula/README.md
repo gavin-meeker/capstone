@@ -1,7 +1,8 @@
 # Count FAKEula
 
 ## Installation/Usage
-```
+
+```sh
 unzip count-fakeula-2025-01-24.zip
 cd count-fakeula
 python3 -m venv venv
@@ -13,66 +14,77 @@ python main.py -d
 # Example Queries
 
 ## IOC extraction
-```
+
+```sh
 curl -s -u user:pass -XPOST -H 'Content-Type: text/plain' http://localhost:7000/extract --data-binary @test-input.txt
 ```
 
 ## Observed Indicator List (OIL)
 
 ### Azure authentication logs
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/azure/1.2.3.4
 curl -s -u 'user:pass' http://localhost:7000/oil/azure/abob
 curl -s -u 'user:pass' http://localhost:7000/oil/azure/alice.bob@example.com
 ```
 
 ### CoxSight (passively generated asset inventory from security logs)
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/coxsight/1.2.3.4
 curl -s -u 'user:pass' http://localhost:7000/oil/coxsight/laptop1
 ```
 
 ### Email
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/email/1.2.3.4
 curl -s -u 'user:pass' http://localhost:7000/oil/email/alice.bob@example.com
 curl -s -u 'user:pass' http://localhost:7000/oil/email/charlie@example.com
 ```
 
 ### Helios/Suricata (intrusion detection systems)
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/helios/1.2.3.4
 curl -s -u 'user:pass' http://localhost:7000/oil/suricata/1.2.3.4
 ```
 
 ### Netflow (enterprise network traffic)
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/netflow/1.2.3.4
 ```
 
 ### Okta authentication logs
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/okta/1.2.3.4
 curl -s -u 'user:pass' http://localhost:7000/oil/okta/alice.bob@example.com
 ```
 
 ### Prisma VPN logs
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/prisma/1.2.3.4
 ```
 
 ### Query all sources
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/oil/1.2.3.4
 ```
 
 ### Query specific sources
-```
+
+```sh
 curl -s -u 'user:pass' 'http://localhost:7000/oil/1.2.3.4?source=azure&source=okta'
 ```
 
 ## Asset inventory
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/asset/server
 curl -s -u 'user:pass' http://localhost:7000/asset/server.example.com
 curl -s -u 'user:pass' http://localhost:7000/asset/10.0.0.1
@@ -81,29 +93,34 @@ curl -s -u 'user:pass' http://localhost:7000/asset/10.0.0.1
 ## Carbon Black Response
 
 ### Search for processes that have sent traffic to 1.2.3.4 (Note: too slow for bulk lookups)
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/cbr/1.2.3.4
 ```
 
 ### Return information about a host running CBR
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/cbr/sensor/host1
 curl -s -u 'user:pass' http://localhost:7000/cbr/sensor/192.168.0.1
 ```
 
 ### Return information about a binary based on file hash
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/cbr/binary/F88ADB10AB5313D4FA33416F6F5FB4FF
 curl -s -u 'user:pass' http://localhost:7000/cbr/binary/3B26493A5BADBA73D08DE156E13F5FD16D56B750585182605E81744247D2C5BD
 ```
 
 ## GeoIP - Fully functional, so should work with any IP
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/geo/1.2.3.4
 ```
 
 ## LDAP - Active Directory lookups
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/ldap/abob
 curl -s -u 'user:pass' http://localhost:7000/ldap/alice.bob@example.com
 ```
@@ -111,20 +128,22 @@ curl -s -u 'user:pass' http://localhost:7000/ldap/alice.bob@example.com
 ## Passive DNS
 
 ### Queries for data
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/pdns/1.2.3.4
 curl -s -u 'user:pass' http://localhost:7000/pdns/a.internal-test-ignore.biz
 ```
 
 ### Queries for result counts
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/pdns/1.2.3.4/_summary
 curl -s -u 'user:pass' http://localhost:7000/pdns/a.internal-test-ignore.biz/_summary
 ```
 
-
 ## VPN/Proxy/Data Center Hosting checks
-```
+
+```sh
 curl -s -u 'user:pass' http://localhost:7000/vpn/1.2.3.4
 curl -s -u 'user:pass' http://localhost:7000/vpn/8.8.8.8
 ```
