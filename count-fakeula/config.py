@@ -34,5 +34,11 @@ ldap_port = None
 ldap_use_ssl = None
 ldap_verify = None
 
-# API Key to authentication to FarSight
+# API Key to authenticate to FarSight
 farsight_api_key = None
+
+# Bloom file and source dictionary for filtering IOC extraction
+dictionary_source_file = 'dictionary.txt'
+dictionary_bloom_file = 'dictionary.bloom'
+dictionary_bloom_size = 1000000
+dictionary_bloom_error_rate = 0.01

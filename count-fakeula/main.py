@@ -81,7 +81,11 @@ if __name__ == '__main__':
     
     api.add_resource(
         extract.IOCExtractor, '/extract',
-        resource_class_kwargs={'internal_host_prefixes' : internal_host_prefixes}
+        resource_class_kwargs={
+            'internal_host_prefixes' : internal_host_prefixes,
+            'dictionary_source_file' : dictionary_source_file,
+            'dictionary_bloom_file' : dictionary_bloom_file
+        }
     )
     api.add_resource(
             ldap.LDAPLookup, '/ldap', '/ldap/<string:key>',
