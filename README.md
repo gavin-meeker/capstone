@@ -3,6 +3,7 @@
 ## For Development
 
 There are two folders in this project.
+
 - `client` has the code to run the ReactJS App
 - `server` has the code to run the ExpressJS App
 
