@@ -4,7 +4,9 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "concurrently \"npm run server-dev\" \"npm run start-the-count\"",
+    "server-dev": "nodemon index.js",
+    "start-the-count": "source ./count-fakeula/venv/bin/activate && python3 ./count-fakeula/main.py -d"
   },
   "keywords": [],
   "author": "",
