@@ -4,7 +4,7 @@ import axios from "axios";
  * @param {express.Request} req
  * @param {express.Response} res
  */
-export async function iocTable(req, res) {
+export default async function iocTable(req, res) {
   //TODO: need to refactor to add error handling
   //TODO: need to refactor to decompose logic
   const {

@@ -1,4 +1,4 @@
-import axios from "axios";
+import theCount from "../theCountApi.js";
 
 /**
  *
@@ -6,14 +6,17 @@ import axios from "axios";
  * @param {express.Response} res
  */
 export default async function extract(req, res) {
-  const {
-    data: { data },
-  } = await axios.post("http://localhost:7000/extract", req.body, {
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${process.env.USERNAME}:${process.env.PASSWORD}`).toString("base64")}`,
-      "Content-Type": "text/plain",
-    },
-  });
+  let data;
+  try {
+    data = await theCount.post("/extract", req.body, {
+      headers: {
+        "Content-Type": "text/plain",
+      },
+    });
+  } catch (e) {
+    res.status(500).send({ e });
+    return;
+  }
 
-  res.json(data);
+  res.json(data.data.data);
 }
