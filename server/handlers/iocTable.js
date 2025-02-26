@@ -1,4 +1,4 @@
-import axios from "axios";
+import { theCount } from "../theCountApi.js";
 
 /**
  * @param {express.Request} req
@@ -6,21 +6,22 @@ import axios from "axios";
  */
 export default async function iocTable(req, res) {
   //TODO: need to refactor to add error handling
-  //TODO: need to refactor to decompose logic
-  const {
-    data: { data },
-  } = await axios.get("http://localhost:7000/oil/1.2.3.4", {
-    headers: {
-      Authorization: `Basic ${Buffer.from(`${process.env.USERNAME}:${process.env.PASSWORD}`).toString("base64")}`,
-    },
-  });
+  try {
+    const {
+      data: { data: oilData },
+    } = await theCount.get("/oil/1.2.3.4");
 
-  let returnItem = {};
-  data.forEach((IOC) => {
-    Object.hasOwn(returnItem, IOC.oil)
-      ? returnItem[IOC.oil]++
-      : (returnItem[IOC.oil] = 1);
-  });
+    const responseObject = buildReturnObject(oilData);
 
-  res.send(returnItem);
+    res.send(responseObject);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+}
+
+function buildReturnObject(oilData) {
+  return oilData.reduce((acc, IOC) => {
+    acc[IOC.oil] = (acc[IOC.oil] || 0) + 1;
+    return acc;
+  }, {});
 }

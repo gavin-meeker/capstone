@@ -1,6 +1,4 @@
-// TODO: need to have better deployment strategy for dev vs prod
-import dotnev from "dotenv";
-dotnev.config({ path: ".env.development.local" });
+import "./config/index.js";
 import app from "./server.js";
 
 const port = process.env.PORT || 3000;
