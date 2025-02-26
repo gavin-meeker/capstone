@@ -1,7 +1,6 @@
-import theCount from "../theCountApi.js";
+import { theCount } from "../theCountApi.js";
 
 /**
- *
  * @param {express.Request} req
  * @param {express.Response} res
  */
