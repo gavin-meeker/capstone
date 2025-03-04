@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
 import { api } from "../utils/api";
+import IocTable from "./components/IocTable.jsx";
 
 const testData = `# IPs
 1.2.3.4
@@ -65,21 +65,7 @@ function App() {
         />
         <Button onClick={handleClick}>Extract IOC</Button>
       </Container>
-      <Table striped bordered striped hover>
-        <thead>
-          <tr>
-            <th>IOC</th>
-          </tr>
-        </thead>
-        <tbody>
-          {iocArray.length > 0 &&
-            iocArray.map((ioc) => (
-              <tr key={crypto.randomUUID()}>
-                <td>{ioc.threat.indicator.description}</td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      <IocTable iocArray={iocArray} />
     </>
   );
 }
