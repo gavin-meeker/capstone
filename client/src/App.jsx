@@ -2,6 +2,8 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
+import Container from "react-bootstrap/Container";
+import { api } from "../utils/api";
 
 const testData = `# IPs
 1.2.3.4
@@ -34,13 +36,13 @@ function App() {
 
   const handleClick = async () => {
     if (!iocInput) return;
+
     try {
-      const data = await fetch("http://localhost:8080/v1/extract", {
-        method: "POST",
-        body: iocInput,
-        "Content-Type": "text/plain",
+      const { data: iocData } = await api.post("/extract", iocInput, {
+        headers: {
+          "Content-Type": "text/plain",
+        },
       });
-      const iocData = await data.json();
       setIocArray(iocData);
     } catch (e) {
       setFetchError(e);
@@ -54,18 +56,15 @@ function App() {
 
   return (
     <>
-      <div className="textbox">
-        <h1 className="blue-500">Hello</h1>
+      <Container>
         <Form.Control
           placeholder="Paste/Enter IOC Data Here"
           as="textarea"
           style={{ height: "100px", width: "50%" }}
           onChange={(e) => setIocInput(e.target.value)}
         />
-        <Button onClick={handleClick} className="bg-indigo">
-          Extract IOC
-        </Button>
-      </div>
+        <Button onClick={handleClick}>Extract IOC</Button>
+      </Container>
       <Table striped bordered striped hover>
         <thead>
           <tr>
