@@ -5,32 +5,9 @@ import Container from "react-bootstrap/Container";
 import { api } from "../utils/api";
 import IocTable from "./components/IocTable.jsx";
 
-const testData = `# IPs
-1.2.3.4
-4.5.6[.]7
-2607:f8b0:400c:c05::65
-
-# Domains
-domain1.com
-domain2[.]xyz
-www.domain3[.]biz
-
-# URLs
-hxxps://www.domain3[.]org/bad/stuff
-
-# Hashes
-F88ADB10AB5313D4FA33416F6F5FB4FF
-3B26493A5BADBA73D08DE156E13F5FD16D56B750585182605E81744247D2C5BD
-
-# Usernames
-This user is corp\\test
-a1ServiceAccount
-p1PamAccount
-c00024 b29509
-This is an English sentence, and none of these words should be mistaken for usernames.`;
 function App() {
   // TODO: need to remove this testData
-  const [iocInput, setIocInput] = useState(testData);
+  const [iocInput, setIocInput] = useState("");
   const [iocArray, setIocArray] = useState([]);
   const [fetchError, setFetchError] = useState("");
 
