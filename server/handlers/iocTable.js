@@ -6,10 +6,11 @@ import { theCount } from "../theCountApi.js";
  */
 export default async function iocTable(req, res) {
   //TODO: need to refactor to add error handling
+
   try {
     const {
       data: { data: oilData },
-    } = await theCount.get("/oil/1.2.3.4");
+    } = await theCount.get(`/oil/${req.query.ioc}`);
 
     const responseObject = buildReturnObject(oilData);
 
