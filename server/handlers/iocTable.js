@@ -16,7 +16,12 @@ export default async function iocTable(req, res) {
 
     res.send(responseObject);
   } catch (e) {
-    res.status(500).send(e);
+    //TODO: need to figure out a way to handle sending data back cleanly
+    if (e.code === 404) {
+      res.send(undefined);
+    } else {
+      res.status(200).send(undefined);
+    }
   }
 }
 
