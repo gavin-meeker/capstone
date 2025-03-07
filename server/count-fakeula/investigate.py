@@ -22,9 +22,9 @@ Defang? <input type=checkbox name=defang %s><br><br>
 
 def extract(text, defang):
     if defang:
-        url = "http://localhost:7000/extract?defang=1"
+        url = "http://localhost:8000/extract?defang=1"
     else:
-        url = "http://localhost:7000/extract"
+        url = "http://localhost:8000/extract"
     r = requests.post(
         url,
         data=text,
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     parser.add_argument("-d", "--debug", action='store_true',
             help="Run in debug mode")
     parser.add_argument("-p", "--port", type=int,
-            help="Port to listen on (default 5000 for production or 7000 for debug)")
+            help="Port to listen on (default 5000 for production or 8000 for debug)")
     args = parser.parse_args()
 
     print("Starting server...", flush=True)

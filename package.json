@@ -6,7 +6,8 @@
   "scripts": {
     "prepare": "husky install",
     "client": "npm run dev --prefix client",
-    "server": "npm run dev --prefix server"
+    "server": "npm run dev --prefix server",
+    "dev": "concurrently \"npm run client\" \"npm run server\""
   },
   "keywords": [],
   "author": "",

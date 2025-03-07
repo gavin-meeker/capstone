@@ -27,7 +27,7 @@ if __name__ == '__main__':
     parser.add_argument("-d", "--debug", action='store_true',
             help="Run in debug mode")
     parser.add_argument("-p", "--port", type=int,
-            help="Port to listen on (default 5000 for production or 7000 for debug)")
+            help="Port to listen on (default 5000 for production or 8000 for debug)")
     args = parser.parse_args()
     app = Flask(__name__)
     api = Api(app)
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     print("Starting API...", flush=True)
 
     if args.debug:
-        port = args.port if args.port else 7000
+        port = args.port if args.port else 8000
         app.run(port=port, host='0.0.0.0', debug=True)
     else:
         port = args.port if args.port else 5000
