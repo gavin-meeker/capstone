@@ -4,8 +4,9 @@ import cors from "cors";
 
 const app = express();
 
-app.use(express.text());
 app.use(cors());
+app.use(express.text());
+app.use(express.json());
 
 app.use("/v1", router);
 
