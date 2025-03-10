@@ -4,7 +4,7 @@ import extract from "./handlers/extract.js";
 
 const router = Router();
 
-router.get("/ioc-table", iocTable);
+router.post("/ioc-table", iocTable);
 
 router.post("/extract", extract);
 

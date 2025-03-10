@@ -8,22 +8,21 @@ const IocTableRow = ({ ioc }) => {
   useEffect(() => {
     const fetchIocData = async () => {
       try {
-        let response = await api.get("/ioc-table", {
-          params: {
-            ioc: ioc.threat.indicator.description,
-          },
+        let response = await api.post("/ioc-table", {
+          ...ioc,
         });
         setData(response.data);
       } catch (e) {
-        console.log(e);
+        console.log(e.message);
       }
     };
     fetchIocData();
   }, []);
+
   return (
     <tr>
       <td>{ioc.threat.indicator.description}</td>
-      {data ? <SecurityLogArray logs={data} /> : <td></td>}
+      {/* {data.length ? <SecurityLogArray logs={data} /> : <td></td>} */}
     </tr>
   );
 };
