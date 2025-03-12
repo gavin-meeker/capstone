@@ -56,7 +56,7 @@ function App() {
 
   return (
     <>
-      <div className="w-96">
+      <div className="mx-auto mt-5 w-1/2">
         <Textarea
           label="Paste IOC"
           resize={true}
@@ -64,8 +64,11 @@ function App() {
           value={testData}
           error={isInputError}
         />
+        <div className="my-3 flex justify-center gap-5">
+          <Button onClick={handleClick}>Extract IOC</Button>
+          <Button onClick={handleClick}>Export IOC (.csv)</Button>
+        </div>
       </div>
-      <Button onClick={handleClick}>Extract IOC</Button>
       {data && <IocTable iocArray={data.data} />}
     </>
   );
