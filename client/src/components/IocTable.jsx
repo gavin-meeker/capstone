@@ -1,23 +1,38 @@
-import Table from "react-bootstrap/Table";
+import { Card, Typography } from "@material-tailwind/react";
 import IocTableRow from "./IocTableRow.jsx";
 
 const IocTable = ({ iocArray }) => {
   return (
     <>
-      <Table striped bordered striped hover size="sm">
-        <thead>
-          <tr>
-            <th>IOC</th>
-            <th>Security Logs</th>
-          </tr>
-        </thead>
-        <tbody>
-          {iocArray.length > 0 &&
-            iocArray.map((ioc) => (
-              <IocTableRow key={crypto.randomUUID()} ioc={ioc} />
+      <div className="h-full mx-auto w-5/6 overflow-scroll">
+        <table className="w-full min-w-max table-auto text-left">
+          <thead>
+            <tr>
+              <th className="border-b border-gray-100 bg-gray-200 p-4">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-bold leading-none"
+                >
+                  IOC
+                </Typography>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {iocArray.map((ioc) => (
+              <tr
+                key={ioc.threat.indicator.description}
+                className="hover:bg-gray-50"
+              >
+                <td className="pl-4 py-4 border-b border-gray-300">
+                  <Typography>{ioc.threat.indicator.description}</Typography>
+                </td>
+              </tr>
             ))}
-        </tbody>
-      </Table>
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };
