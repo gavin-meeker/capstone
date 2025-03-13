@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { api } from "../utils/api";
-import { Button, Textarea } from "@material-tailwind/react";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Button,
+  Textarea,
+} from "@material-tailwind/react";
 import IocTable from "./components/IocTable.jsx";
 import { useQuery } from "@tanstack/react-query";
 
@@ -39,6 +46,11 @@ function App() {
     queryFn: () => extractIocs(iocInput),
     enabled: false,
   });
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(!open);
+
   const handleClick = async () => {
     if (!iocInput) {
       setIsInputError(true);
@@ -66,8 +78,25 @@ function App() {
         />
         <div className="my-3 flex justify-center gap-5">
           <Button onClick={handleClick}>Extract IOC</Button>
-          <Button onClick={handleClick}>Export IOC (.csv)</Button>
+          <Button onClick={handleOpen}>Export IOC (.csv)</Button>
         </div>
+        <Dialog open={open} handler={handleOpen}>
+          <DialogHeader>Not Implemented</DialogHeader>
+          <DialogBody>Not Implemented</DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1"
+            >
+              <span>Cancel</span>
+            </Button>
+            <Button variant="gradient" color="green" onClick={handleOpen}>
+              <span>Confirm</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
       {data && <IocTable iocArray={data.data} />}
     </>
