@@ -1,7 +1,16 @@
-import { Card, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
+import { useState } from "react";
+import IocDrawer from "./IocDrawer.jsx";
 import IocTableRow from "./IocTableRow.jsx";
 
 const IocTable = ({ iocArray }) => {
+  const [currentIoc, setCurrentIoc] = useState(undefined);
+
+  const [open, setOpen] = useState(false);
+
+  const openDrawer = () => setOpen(true);
+  const closeDrawer = () => setOpen(false);
+
   return (
     <>
       <div className="mx-auto h-full w-5/6">
@@ -21,17 +30,20 @@ const IocTable = ({ iocArray }) => {
           </thead>
           <tbody>
             {iocArray.map((ioc) => (
-              <tr
+              <IocTableRow
                 key={ioc.threat.indicator.description}
-                className="hover:bg-gray-50"
-              >
-                <td className="border-b border-gray-300 py-4 pl-4">
-                  <Typography>{ioc.threat.indicator.description}</Typography>
-                </td>
-              </tr>
+                ioc={ioc}
+                setCurrentIoc={setCurrentIoc}
+                openDrawer={openDrawer}
+              />
             ))}
           </tbody>
         </table>
+        <IocDrawer
+          closeDrawer={closeDrawer}
+          currentIoc={currentIoc}
+          isOpen={open}
+        />
       </div>
     </>
   );
