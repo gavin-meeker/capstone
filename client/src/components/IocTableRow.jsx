@@ -1,50 +1,18 @@
-import { api } from "../../utils/api.js";
-import { useEffect, useState } from "react";
-import SecurityLogArray from "./SecurityLogArray.jsx";
+import { Typography } from "@material-tailwind/react";
 
-const IocTableRow = ({ ioc }) => {
-  const [data, setData] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    const fetchIocData = async () => {
-      try {
-        let response = await api.post("/ioc-table", {
-          ...ioc,
-        });
-        setData(response.data);
-      } catch (e) {
-        console.log(e.message);
-      }
-    };
-    fetchIocData();
-  }, []);
-
+const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }) => {
+  const handleIocClick = () => {
+    setCurrentIoc(ioc.threat.indicator.description);
+    openDrawer();
+  };
   return (
-    <tr>
-      <td>
-        <Button onClick={() => setShowModal(true)}>
-          {ioc.threat.indicator.description}
-        </Button>
-        <Modal
-          style={{
-            width: "50%",
-            marginLeft: "50%",
-          }}
-          runBackdropTransition={false}
-          show={showModal}
-          fullscreen={true}
-          onHide={() => setShowModal(false)}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>{ioc.threat.indicator.description}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>lorem20</p>
-          </Modal.Body>
-        </Modal>
+    <tr
+      onClick={handleIocClick}
+      className="relative cursor-pointer hover:bg-gray-50"
+    >
+      <td className="border-b border-gray-300 py-4 pl-4">
+        <Typography>{ioc.threat.indicator.description}</Typography>
       </td>
-      {/* {data.length ? <SecurityLogArray logs={data} /> : <td></td>} */}
     </tr>
   );
 };
