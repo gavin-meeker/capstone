@@ -2,7 +2,7 @@ import { Typography } from "@material-tailwind/react";
 
 const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }) => {
   const handleIocClick = () => {
-    setCurrentIoc(ioc.threat.indicator.description);
+    setCurrentIoc(ioc);
     openDrawer();
   };
   return (
