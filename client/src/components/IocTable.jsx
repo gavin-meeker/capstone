@@ -4,7 +4,7 @@ import IocDrawer from "./IocDrawer.jsx";
 import IocTableRow from "./IocTableRow.jsx";
 
 const IocTable = ({ iocArray }) => {
-  const [currentIoc, setCurrentIoc] = useState(undefined);
+  const [ioc, setCurrentIoc] = useState(undefined);
 
   const [open, setOpen] = useState(false);
 
@@ -39,10 +39,10 @@ const IocTable = ({ iocArray }) => {
             ))}
           </tbody>
         </table>
-        {currentIoc && (
+        {ioc && (
           <IocDrawer
             closeDrawer={closeDrawer}
-            currentIoc={currentIoc ? currentIoc : ""}
+            ioc={ioc ? ioc : ""}
             isOpen={open}
           />
         )}

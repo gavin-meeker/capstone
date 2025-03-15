@@ -58,7 +58,7 @@ function App() {
     }
     setIsInputError(false);
 
-    refetch();
+    await refetch();
   };
 
   // TODO: better error resolution here
