@@ -7,7 +7,7 @@ import {
 import { truncateString } from "../utils/helpers.js";
 import PassiveDNSDrawer from "./PassiveDNSDrawer.jsx";
 
-const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
+const IocDrawer = ({ closeDrawer, ioc, isOpen }) => {
   return (
     <>
       {/* TODO: would be cool to find a way to fix the background for drawer when scrolling */}
@@ -23,7 +23,7 @@ const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <Typography variant="h3" color="blue-gray" className="mb-0.5">
-              {truncateString(currentIoc.threat.indicator.description)}
+              {truncateString(ioc.threat.indicator.description)}
             </Typography>
             <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
               <svg
@@ -43,7 +43,7 @@ const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
             </IconButton>
           </div>
           <Typography variant="small" color="blue-gray" className="block">
-            [{currentIoc.threat.indicator.type}]
+            [{ioc.threat.indicator.type}]
           </Typography>
         </div>
         <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
@@ -52,7 +52,7 @@ const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
         <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
           Net Flow
         </Typography>
-        <PassiveDNSDrawer />
+        <PassiveDNSDrawer ioc={ioc} />
         <div className="flex gap-2">
           <Button size="sm" variant="outlined">
             Outlined Button
@@ -63,12 +63,5 @@ const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
     </>
   );
 };
-
-// function truncateString(str, maxLength) {
-//   if (str.length > maxLength) {
-//     return str.slice(0, maxLength - 3) + "...";
-//   }
-//   return str;
-// }
 
 export default IocDrawer;
