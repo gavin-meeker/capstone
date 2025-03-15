@@ -41,7 +41,7 @@ const IocTable = ({ iocArray }) => {
         </table>
         <IocDrawer
           closeDrawer={closeDrawer}
-          currentIoc={currentIoc}
+          currentIoc={currentIoc ? currentIoc : ""}
           isOpen={open}
         />
       </div>
