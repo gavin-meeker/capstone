@@ -5,6 +5,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { truncateString } from "../utils/helpers.js";
+import PassiveDNSDrawer from "./PassiveDNSDrawer.jsx";
 
 const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
   return (
@@ -51,9 +52,7 @@ const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
         <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
           Net Flow
         </Typography>
-        <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
-          Passive DNS
-        </Typography>
+        <PassiveDNSDrawer />
         <div className="flex gap-2">
           <Button size="sm" variant="outlined">
             Outlined Button
