@@ -16,7 +16,8 @@ const IocDrawer = ({ closeDrawer, currentIoc, isOpen }) => {
         open={isOpen}
         onClose={closeDrawer}
         className="p-4"
-        overlayProps={{ className: "bg-black/25 shadow-none" }}
+        // overlayProps={{ className: "bg-black/25 shadow-none" }}
+        overlay={false}
       >
         <div className="mb-6">
           <div className="flex items-center justify-between">
