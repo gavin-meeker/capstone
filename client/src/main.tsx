@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import "./styles.css";
-import App from "./App.jsx";
+import App from "./App.tsx";
 
 const queryClient = new QueryClient();
 
