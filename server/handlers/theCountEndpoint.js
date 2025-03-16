@@ -19,5 +19,4 @@ export default async function theCountEndpoint(req, res) {
     }
     res.status(500).json({ error: e });
   }
-  return;
 }

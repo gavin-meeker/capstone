@@ -22,5 +22,4 @@ export default async function extract(req, res) {
     }
     res.status(500).json({ e });
   }
-  return;
 }
