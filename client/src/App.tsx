@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { api } from "./utils/api.js";
 import {
+  Button,
   Dialog,
-  DialogHeader,
   DialogBody,
   DialogFooter,
-  Button,
+  DialogHeader,
   Textarea,
 } from "@material-tailwind/react";
-import IocTable from "./components/IocTable.jsx";
+import IocTable from "./components/IocTable.js";
 import { useQuery } from "@tanstack/react-query";
+import { Ioc } from "./types.js";
 
 let testData = `# IPs
 1.2.3.4
@@ -41,7 +42,7 @@ function App() {
   const [iocInput, setIocInput] = useState(testData);
   const [isInputError, setIsInputError] = useState(false);
 
-  const { isPending, data, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["iocs"],
     queryFn: () => extractIocs(iocInput),
     enabled: false,
@@ -72,7 +73,7 @@ function App() {
         <Textarea
           label="Paste IOC"
           resize={true}
-          onChange={(e) => setIocInput(testData)}
+          onChange={() => setIocInput(testData)}
           value={testData}
           error={isInputError}
         />
@@ -103,8 +104,10 @@ function App() {
   );
 }
 
-const extractIocs = async (iocInput) => {
-  return await api.post("/extract", iocInput, {
+type ExtractionResult = Ioc[];
+
+const extractIocs = async (iocInput: string) => {
+  return await api.post<ExtractionResult>("/extract", iocInput, {
     headers: {
       "Content-Type": "text/plain",
     },

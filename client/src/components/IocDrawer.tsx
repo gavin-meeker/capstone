@@ -5,9 +5,16 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { truncateString } from "../utils/helpers.js";
-import PassiveDNSDrawer from "./PassiveDNSDrawer.jsx";
+import PassiveDNSDrawer from "./PassiveDNSDrawer.tsx";
+import { Ioc } from "../types.ts";
 
-const IocDrawer = ({ closeDrawer, ioc, isOpen }) => {
+type IocDrawerProps = {
+  ioc: Ioc;
+  closeDrawer: () => void;
+  isOpen: boolean;
+};
+
+const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
   return (
     <>
       {/* TODO: would be cool to find a way to fix the background for drawer when scrolling */}

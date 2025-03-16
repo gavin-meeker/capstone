@@ -1,10 +1,15 @@
 import { Typography } from "@material-tailwind/react";
 import { useState } from "react";
-import IocDrawer from "./IocDrawer.jsx";
-import IocTableRow from "./IocTableRow.jsx";
+import { Ioc } from "../types.ts";
+import IocDrawer from "./IocDrawer.js";
+import IocTableRow from "./IocTableRow.js";
 
-const IocTable = ({ iocArray }) => {
-  const [ioc, setCurrentIoc] = useState(undefined);
+type IocTableProps = {
+  iocArray: Ioc[];
+};
+
+const IocTable = ({ iocArray }: IocTableProps) => {
+  const [ioc, setCurrentIoc] = useState<Ioc | undefined>(undefined);
 
   const [open, setOpen] = useState(false);
 
