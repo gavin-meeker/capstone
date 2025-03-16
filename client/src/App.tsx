@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api } from "./utils/api.js";
+import { api } from "./utils/api";
 import {
   Button,
   Dialog,
@@ -8,9 +8,9 @@ import {
   DialogHeader,
   Textarea,
 } from "@material-tailwind/react";
-import IocTable from "./components/IocTable.js";
+import IocTable from "./components/IocTable";
 import { useQuery } from "@tanstack/react-query";
-import { Ioc } from "./types.js";
+import { Ioc } from "./types";
 
 let testData = `# IPs
 1.2.3.4
