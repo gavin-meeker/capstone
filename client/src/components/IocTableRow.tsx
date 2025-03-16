@@ -1,6 +1,14 @@
 import { Typography } from "@material-tailwind/react";
+import { Ioc } from "../types.ts";
+import { Dispatch, SetStateAction } from "react";
 
-const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }) => {
+type IocTableRowProps = {
+  ioc: Ioc;
+  setCurrentIoc: Dispatch<SetStateAction<Ioc | undefined>>;
+  openDrawer: () => void;
+};
+
+const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
   const handleIocClick = () => {
     setCurrentIoc(ioc);
     openDrawer();
