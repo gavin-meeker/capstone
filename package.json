@@ -6,27 +6,37 @@
   "scripts": {
     "prepare": "husky install",
     "client": "npm run dev --prefix client",
-    "server": "npm run dev --prefix server"
+    "server": "npm run dev --prefix server",
+    "prettier": "prettier --config ./.prettierrc --write ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
     "concurrently": "^9.1.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
-    "prettier": "^3.5.1"
+    "prettier": "^3.5.1",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "typescript": "^5.8.2"
   },
   "lint-staged": {
     "*.{js,css,md,jsx,scss,ts,tsx}": "prettier --write"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.1.10",
     "axios": "^1.8.1",
-    "dotenv": "^16.4.7"
+    "capstone": "file:server",
+    "client": "file:client",
+    "dotenv": "^16.4.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "prettier": {
     "plugins": [
-      "./client/node_modules/prettier-plugin-tailwindcss/dist/index.mjs"
+      "./node_modules/prettier-plugin-tailwindcss/dist/index.mjs"
     ]
   }
 }

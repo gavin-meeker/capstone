@@ -1,4 +1,4 @@
-import { Typography } from "@material-tailwind/react";
+import { Typography, Spinner } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../utils/api.js";
 import { Ioc } from "../../types.ts";
@@ -13,24 +13,42 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = () => setOpen(!open);
-  const { isPending, data } = useQuery({
+  const { isPending, data, isError, error } = useQuery<{
+    data: PassiveDnsSummaryResult;
+  }>({
     queryKey: ["passiveDnsCount", ioc.threat.indicator.description],
     queryFn: () => getPassiveDnsCount(ioc),
   });
-  //TODO: would like a better way to handle the loading state to show a spinner or something
-  const hasDnsRecords = !isPending && data?.data?.length > 0;
+
+  // Used Null Coalescing to extend the ways in which data verification is handled
+  const hasDnsRecords = !isPending && (data?.data?.length ?? 0) > 0;
   return (
     <>
       <Typography
         variant="h5"
         color="gray"
-        //TODO: need to conditionally add class names (hover state) based on if there are dns records
-        className="mb-8 cursor-pointer pr-4 font-normal hover:text-blue-400"
+        // Added a conditonally triggered parameter
+        className={`mb-8 cursor-pointer pr-4 font-normal ${
+          hasDnsRecords ? "hover:text-blue-400" : ""
+        }`}
         onClick={handleOpen}
       >
         Passive DNS
-        {hasDnsRecords && ` (${data?.data[0].count.toLocaleString()} Records)`}
+        {hasDnsRecords && ` (${data?.data[0]?.count.toLocaleString()} Records)`}
       </Typography>
+      {isPending && (
+        <div className="flex items-center justify-center">
+          <Spinner className="h-8 w-8" />
+        </div>
+      )}
+      {isError && (
+        <Typography color="red">
+          Error loading Passive DNS:{" "}
+          {Error instanceof Error
+            ? error?.message
+            : "An unknown error has occured."}
+        </Typography>
+      )}
       {hasDnsRecords && (
         <PassiveDNSModal ioc={ioc} open={open} handleOpen={handleOpen} />
       )}
@@ -52,7 +70,9 @@ type PassiveDnsSummary = {
 
 type PassiveDnsSummaryResult = PassiveDnsSummary[];
 
-const getPassiveDnsCount = async (ioc: Ioc) => {
+const getPassiveDnsCount = async (
+  ioc: Ioc,
+): Promise<{ data: PassiveDnsSummaryResult }> => {
   return await api.post<PassiveDnsSummaryResult>(
     `thecount/pdns/${ioc.threat.indicator.description}/_summary`,
   );
