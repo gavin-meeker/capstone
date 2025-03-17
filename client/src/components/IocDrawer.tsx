@@ -4,8 +4,8 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import { truncateString } from "../utils/helpers.js";
-import PassiveDNSDrawer from "./PassiveDNSDrawer.tsx";
+import { truncateString } from "../utils/helpers";
+import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
 
 type IocDrawerProps = {

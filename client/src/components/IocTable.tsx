@@ -44,13 +44,7 @@ const IocTable = ({ iocArray }: IocTableProps) => {
             ))}
           </tbody>
         </table>
-        {ioc && (
-          <IocDrawer
-            closeDrawer={closeDrawer}
-            ioc={ioc ? ioc : ""}
-            isOpen={open}
-          />
-        )}
+        {ioc && <IocDrawer closeDrawer={closeDrawer} ioc={ioc} isOpen={open} />}
       </div>
     </>
   );
