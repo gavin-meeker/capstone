@@ -18,10 +18,15 @@
     "prettier": "^3.5.1"
   },
   "lint-staged": {
-    "*.{js,css,md,jsx,scss}": "prettier --write"
+    "*.{js,css,md,jsx,scss,ts,tsx}": "prettier --write"
   },
   "dependencies": {
     "axios": "^1.8.1",
     "dotenv": "^16.4.7"
+  },
+  "prettier": {
+    "plugins": [
+      "./client/node_modules/prettier-plugin-tailwindcss/dist/index.mjs"
+    ]
   }
 }

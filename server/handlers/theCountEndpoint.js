@@ -4,15 +4,12 @@ import { theCount } from "../theCountApi.js";
  * @param {express.Request} req
  * @param {express.Response} res
  */
-export default async function extract(req, res) {
+export default async function theCountEndpoint(req, res) {
+  const theCountParams = req.params["0"];
   try {
     const {
       data: { data: extractedData },
-    } = await theCount.post("/extract", req.body, {
-      headers: {
-        "Content-Type": "text/plain",
-      },
-    });
+    } = await theCount.get("/" + theCountParams);
     res.json(extractedData);
   } catch (e) {
     //TODO: need to figure out a way to handle sending data back cleanly
@@ -20,6 +17,6 @@ export default async function extract(req, res) {
       res.send(undefined);
       return;
     }
-    res.status(500).json({ e });
+    res.status(500).json({ error: e });
   }
 }
