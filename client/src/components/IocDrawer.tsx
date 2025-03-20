@@ -7,6 +7,7 @@ import {
 import { truncateString } from "../utils/helpers";
 import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
+import NetFlowTable from "./Netflow/NetFlowTable.tsx";
 
 type IocDrawerProps = {
   ioc: Ioc;
@@ -57,8 +58,9 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           Security Logs
         </Typography>
         <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
-          Net Flow
+          Netflow
         </Typography>
+        <NetFlowTable ioc={ioc} />
         <PassiveDNSDrawer ioc={ioc} />
         <div className="flex gap-2">
           <Button size="sm" variant="outlined">

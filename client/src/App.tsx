@@ -76,6 +76,7 @@ function App() {
           onChange={() => setIocInput(testData)}
           value={testData}
           error={isInputError}
+          className="h-1/3"
         />
         <div className="my-3 flex justify-center gap-5">
           <Button onClick={handleClick}>Extract IOC</Button>
