@@ -1,12 +1,13 @@
 // TODO: need to have better deployment strategy for dev vs prod
-import dotnev from "dotenv";
+import dotenv from "dotenv"; // Changed from "dotnev" to "dotenv"
 import path from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 
-const config = dotnev.config({
+const config = dotenv.config({
+  // Changed from "dotnev" to "dotenv"
   path: path.join(__dirname, "../.env.development.local"),
 });
 

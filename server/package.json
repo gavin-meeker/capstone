@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run server-dev\" \"npm run start-the-count\"",
     "server-dev": "nodemon index.js",
-    "start-the-count": "source ./count-fakeula/venv/bin/activate && python3 ./count-fakeula/main.py -d"
+    "start-the-count": "cd /mnt/c/Users/erica/capstone/server/count-fakeula && . venv/bin/activate && python3.8 main.py -d"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,8 @@
     "express": "^4.21.2"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0"
+    "@types/express": "^5.0.0",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.9"
   }
 }
