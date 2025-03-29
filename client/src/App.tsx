@@ -6,11 +6,13 @@ import {
   DialogBody,
   DialogFooter,
   DialogHeader,
+  Switch,
   Textarea,
 } from "@material-tailwind/react";
 import IocTable from "./components/IocTable";
 import { useQuery } from "@tanstack/react-query";
 import { Ioc } from "./types";
+import ExportCsvModal from "./components/ExportCsvModal.tsx";
 
 let testData = `# IPs
 1.2.3.4
@@ -44,7 +46,8 @@ function App() {
 
   const { data, refetch } = useQuery({
     queryKey: ["iocs"],
-    queryFn: () => extractIocs(iocInput),
+    // TODO: refactor this to use tanstack best practices. See https://tanstack.com/query/v4/docs/framework/react/guides/query-functions#query-function-variables
+    queryFn: () => extractIocs(iocInput, false),
     enabled: false,
   });
 
@@ -80,25 +83,15 @@ function App() {
         />
         <div className="my-3 flex justify-center gap-5">
           <Button onClick={handleClick}>Extract IOC</Button>
-          <Button onClick={handleOpen}>Export IOC (.csv)</Button>
+          <Button disabled={!data} onClick={handleOpen}>
+            Export IOC (.csv)
+          </Button>
         </div>
-        <Dialog open={open} handler={handleOpen}>
-          <DialogHeader>Not Implemented</DialogHeader>
-          <DialogBody>Not Implemented</DialogBody>
-          <DialogFooter>
-            <Button
-              variant="text"
-              color="red"
-              onClick={handleOpen}
-              className="mr-1"
-            >
-              <span>Cancel</span>
-            </Button>
-            <Button variant="gradient" color="green" onClick={handleOpen}>
-              <span>Confirm</span>
-            </Button>
-          </DialogFooter>
-        </Dialog>
+        <ExportCsvModal
+          open={open}
+          handleOpen={handleOpen}
+          iocInput={iocInput}
+        />
       </div>
       {data && <IocTable iocArray={data.data} />}
     </>
@@ -107,12 +100,16 @@ function App() {
 
 type ExtractionResult = Ioc[];
 
-const extractIocs = async (iocInput: string) => {
-  return await api.post<ExtractionResult>("/extract", iocInput, {
-    headers: {
-      "Content-Type": "text/plain",
+export const extractIocs = async (iocInput: string, shouldDefang = true) => {
+  return await api.post<ExtractionResult>(
+    `/extract?${shouldDefang ? "defang=true" : ""}`,
+    iocInput,
+    {
+      headers: {
+        "Content-Type": "text/plain",
+      },
     },
-  });
+  );
 };
 
 export default App;
