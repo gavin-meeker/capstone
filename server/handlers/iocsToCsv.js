@@ -2,11 +2,12 @@ import { Parser } from "@json2csv/plainjs";
 import { theCount } from "../theCountApi.js";
 
 /**
- * @param {Express.Request} req
- * @param {Express.Response} res
+ * @param {express.Request} req
+ * @param {express.Response} res
  */
 export default async function iocsToCsv(req, res) {
   const shouldDefang = req.query.defang === "true";
+  console.log(req.body);
 
   try {
     const {

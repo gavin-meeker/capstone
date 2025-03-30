@@ -8,8 +8,8 @@ import {
 } from "@material-tailwind/react";
 import { ChangeEvent, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../utils/api";
 import { extractIocs } from "../App.tsx";
+import { api } from "../utils/api";
 
 type ExportCsvModalProps = {
   iocInput: string;
@@ -29,10 +29,32 @@ const ExportCsvModal = ({
     queryFn: ({ queryKey }) => extractIocs(queryKey[1], queryKey[2]),
   });
 
+  const {
+    data: iocCsv,
+    refetch: refetchIocCsv,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["iocToCsv", iocInput],
+    queryFn: ({ queryKey }) => getIocCsv(queryKey[1]),
+    enabled: false,
+  });
+
+  console.log(iocCsv);
+
   const handleDefangSwitch = async (e: ChangeEvent<HTMLInputElement>) => {
     setShouldDefang(e.target.checked);
     await refetch();
   };
+
+  const handleIocCsv = async () => {
+    refetchIocCsv();
+  };
+
+  if (isSuccess) {
+    console.log(iocCsv.data);
+    downloadCSV(iocCsv.data);
+  }
+
   const displayableIocs = data?.data
     .filter(
       (ioc) =>
@@ -77,12 +99,31 @@ const ExportCsvModal = ({
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
+          <Button variant="gradient" color="green" onClick={handleIocCsv}>
             <span>Confirm</span>
           </Button>
         </DialogFooter>
       </Dialog>
     </>
   );
+};
+
+const downloadCSV = (csvString: string) => {
+  const csvData = new Blob([csvString], { type: "text/csv" });
+  const csvURL = URL.createObjectURL(csvData);
+  const link = document.createElement("a");
+  link.href = csvURL;
+  link.download = `test.csv`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+const getIocCsv = async (iocInput: string) => {
+  return api.post("/iocsToCsv", iocInput, {
+    headers: {
+      "Content-Type": "text/plain",
+    },
+  });
 };
 export default ExportCsvModal;
