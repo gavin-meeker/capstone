@@ -50,7 +50,7 @@ const ExportCsvModal = ({
 
   return (
     <>
-      <Dialog open={open} handler={handleOpen}>
+      <Dialog open={open} handler={handleOpen} size="sm">
         <DialogHeader>
           Export to IOCs to CSV
           <div className="ml-auto">
@@ -84,7 +84,7 @@ const ExportCsvModal = ({
             <span>Cancel</span>
           </Button>
           <Button variant="gradient" color="green" onClick={handleIocCsv}>
-            <span>Confirm</span>
+            <span>Download CSV</span>
           </Button>
         </DialogFooter>
       </Dialog>
