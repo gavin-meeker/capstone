@@ -1,5 +1,6 @@
 import { Parser } from "@json2csv/plainjs";
 import { theCount } from "../theCountApi.js";
+import morgan from "morgan";
 
 /**
  * @param {express.Request} req
@@ -7,7 +8,6 @@ import { theCount } from "../theCountApi.js";
  */
 export default async function iocsToCsv(req, res) {
   const shouldDefang = req.query.defang === "true";
-  console.log(req.body);
 
   try {
     const {
@@ -37,8 +37,12 @@ export default async function iocsToCsv(req, res) {
     const csv = parser.parse(extractedData);
 
     const dateString = formatDate(new Date());
+    const fileName = `ioc_${dateString}.csv`;
 
-    res.attachment(`ioc_${dateString}.csv`).send(csv);
+    res.json({
+      fileName,
+      csv,
+    });
   } catch (e) {
     //TODO: need to figure out a way to handle sending data back cleanly
     if (e.status === 404) {
