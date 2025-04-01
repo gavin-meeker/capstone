@@ -1,14 +1,6 @@
 import { useState } from "react";
 import { api } from "./utils/api";
-import {
-  Button,
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  Switch,
-  Textarea,
-} from "@material-tailwind/react";
+import { Button, Textarea } from "@material-tailwind/react";
 import IocTable from "./components/IocTable";
 import { useQuery } from "@tanstack/react-query";
 import { Ioc } from "./types";
@@ -87,11 +79,13 @@ function App() {
             Export IOC (.csv)
           </Button>
         </div>
-        <ExportCsvModal
-          open={open}
-          handleOpen={handleOpen}
-          iocInput={iocInput}
-        />
+        {data && (
+          <ExportCsvModal
+            open={open}
+            handleOpen={handleOpen}
+            iocInput={iocInput}
+          />
+        )}
       </div>
       {data && <IocTable iocArray={data.data} />}
     </>

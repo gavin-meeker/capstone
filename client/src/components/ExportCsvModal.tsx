@@ -29,31 +29,15 @@ const ExportCsvModal = ({
     queryFn: ({ queryKey }) => extractIocs(queryKey[1], queryKey[2]),
   });
 
-  const {
-    data: iocCsv,
-    refetch: refetchIocCsv,
-    isSuccess,
-  } = useQuery({
-    queryKey: ["iocToCsv", iocInput],
-    queryFn: ({ queryKey }) => getIocCsv(queryKey[1]),
-    enabled: false,
-  });
-
-  console.log(iocCsv);
-
   const handleDefangSwitch = async (e: ChangeEvent<HTMLInputElement>) => {
     setShouldDefang(e.target.checked);
     await refetch();
   };
 
   const handleIocCsv = async () => {
-    refetchIocCsv();
+    const iocCsvData = await getIocCsv(iocInput);
+    downloadCSV(iocCsvData.data.fileName, iocCsvData.data.csv);
   };
-
-  if (isSuccess) {
-    console.log(iocCsv.data);
-    downloadCSV(iocCsv.data);
-  }
 
   const displayableIocs = data?.data
     .filter(
@@ -108,22 +92,31 @@ const ExportCsvModal = ({
   );
 };
 
-const downloadCSV = (csvString: string) => {
+const downloadCSV = (fileName: string, csvString: string) => {
   const csvData = new Blob([csvString], { type: "text/csv" });
   const csvURL = URL.createObjectURL(csvData);
   const link = document.createElement("a");
   link.href = csvURL;
-  link.download = `test.csv`;
+  link.download = fileName;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 };
 
-const getIocCsv = async (iocInput: string) => {
-  return api.post("/iocsToCsv", iocInput, {
-    headers: {
-      "Content-Type": "text/plain",
+type IocCsvResponse = {
+  fileName: string;
+  csv: string;
+};
+
+const getIocCsv = async (iocInput: string, shouldDefang = true) => {
+  return api.post<IocCsvResponse>(
+    `/iocsToCsv${shouldDefang ? "?defang=true" : ""}`,
+    iocInput,
+    {
+      headers: {
+        "Content-Type": "text/plain",
+      },
     },
-  });
+  );
 };
 export default ExportCsvModal;
