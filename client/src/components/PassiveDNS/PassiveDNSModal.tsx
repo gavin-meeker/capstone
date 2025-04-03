@@ -17,6 +17,7 @@ type PassiveDNSModalProps = {
   ioc: Ioc;
   open: boolean;
   handleOpen: () => void;
+  useSummary: boolean; // Add useSummary Prop
 };
 
 const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
