@@ -85,12 +85,10 @@ type PassiveDnsSummary = {
 type PassiveDnsSummaryResult = PassiveDnsSummary[];
 
 const getPassiveDnsCount = async (ioc: Ioc, useSummary: boolean) => {
-  const summaryEndpoint =
-    "thecount/pdns/${ioc.threat.indicator.description}/_summary";
-  const fullEndpoint = "thecount/pdns/${ioc.threat.indicator.description}";
+  const summaryEndpoint = `thecount/pdns/${ioc.threat.indicator.description}/_summary`;
+  const fullEndpoint = `thecount/pdns/${ioc.threat.indicator.description}`;
 
   const endpoint = useSummary ? summaryEndpoint : fullEndpoint;
-  const temp = ioc;
   return await api.post<PassiveDnsSummaryResult>(endpoint);
 };
 
