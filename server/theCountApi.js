@@ -1,8 +1,9 @@
 import axios from "axios";
 
-// TODO: need to grab this port number from the config
+const port = process.env.COUNT_PORT || 7000;
+
 export const theCount = axios.create({
-  baseURL: "http://localhost:7000",
+  baseURL: `http://localhost:${port}`,
   auth: {
     username: process.env.USERNAME,
     password: process.env.PASSWORD,
