@@ -14,7 +14,7 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
     setCurrentIoc(ioc);
     openDrawer();
   };
-
+  //ioc.threat.indicator.description -- ip address for domain, table row component and drawers use of prop
   return (
     <tr className="relative cursor-pointer hover:bg-gray-50">
       <td className="border-b border-gray-300 py-4 pl-4">

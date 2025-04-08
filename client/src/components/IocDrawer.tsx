@@ -7,7 +7,7 @@ import {
 import { truncateString } from "../utils/helpers";
 import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
-import NetFlowTable from "./Netflow/NetFlowTable.tsx";
+import SecurityLogDisplay from "./SecurityLogDisplay.tsx";
 
 type IocDrawerProps = {
   ioc: Ioc;
@@ -15,6 +15,14 @@ type IocDrawerProps = {
   isOpen: boolean;
 };
 
+type OilData = {
+  oil: string;
+  [key: string]: any; // for other fields you're not directly using
+};
+
+type OilResponse = {
+  data: OilData[];
+};
 const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
   return (
     <>
@@ -76,7 +84,7 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           </Typography>
         </div>
         <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
-          Security Logs
+          <SecurityLogDisplay ioc={ioc} />
         </Typography>
         <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
           Netflow
