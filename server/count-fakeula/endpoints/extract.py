@@ -3,8 +3,7 @@ import re
 import validators
 
 from tld import get_tld, get_fld
-from pybloom_live import BloomFilter
-'''from pybloomfilter import BloomFilter'''
+from pybloomfilter import BloomFilter
 
 from flask import request
 from flask_restful import reqparse
