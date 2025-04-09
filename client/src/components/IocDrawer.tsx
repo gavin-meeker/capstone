@@ -8,6 +8,7 @@ import { truncateString } from "../utils/helpers";
 import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
 import SecurityLogDisplay from "./SecurityLogDisplay.tsx";
+import NetFlowTable from "./Netflow/NetFlowTable.tsx";
 
 type IocDrawerProps = {
   ioc: Ioc;
