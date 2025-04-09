@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url); // get the resolved path to t
 const __dirname = path.dirname(__filename); // get the name of the directory
 
 const config = dotnev.config({
-  path: path.join(__dirname, "../.env.development.local"),
+  path: path.join(__dirname, "../../.env.development.local"),
 });
 
 if (config.error) {
