@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "prod": "NODE_ENV=production node index.js",
     "start-the-count": "source ./count-fakeula/venv/bin/activate && python3 ./count-fakeula/main.py -d"
   },
@@ -13,11 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "@json2csv/plainjs": "^7.0.6",
+    "axios": "^1.8.4",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0"
+    "@types/express": "^5.0.0",
+    "cross-env": "^7.0.3"
   }
 }
