@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../utils/api";
 
 const SOURCES = ["azure", "okta", "prisma", "helios", "email"];
-
+//return actual information affiliated with it
 type SecurityLogsDisplayProps = {
   ioc: any; // Ideally use your actual Ioc type
 };
@@ -18,6 +18,9 @@ const SecurityLogsDisplay: React.FC<SecurityLogsDisplayProps> = ({ ioc }) => {
       console.warn("⚠️ No IOC key provided");
       return;
     }
+
+    //this is to query all sources Query all sources
+    // curl -s -u 'user:pass' http://localhost:7000/oil/1.2.3.4
 
     const fetchLogs = async () => {
       setLoading(true);
