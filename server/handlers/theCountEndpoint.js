@@ -6,6 +6,7 @@ import { theCount } from "../theCountApi.js";
  */
 export default async function theCountEndpoint(req, res) {
   const theCountParams = req.params["0"];
+  console.log(theCountParams);
   try {
     const {
       data: { data: extractedData },
