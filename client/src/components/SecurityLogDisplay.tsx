@@ -42,9 +42,7 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
 
   return (
     <div>
-      <h3>
-        Security Logs for IOC: <code>{iocKey}</code>
-      </h3>
+      <h3>Security Logs</h3>
       {filteredLogs.length === 0 ? (
         <p>No security logs affiliated with this IOC.</p>
       ) : (
