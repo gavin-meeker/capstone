@@ -34,6 +34,11 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         open={isOpen}
         onClose={closeDrawer}
         className="p-4"
+        style={{
+          backgroundColor: "black",
+          color: "limegreen",
+          fontFamily: "monospace",
+        }}
         // overlayProps={{ className: "bg-black/25 shadow-none" }}
         overlay={false}
       >
@@ -46,7 +51,8 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                className="size-6 text-gray-400 hover:cursor-pointer hover:text-gray-600"
+                className="size-6 text-gray-400 hover:cursor-pointer"
+                style={{ color: "#a1a1aa" }}
                 onClick={() =>
                   navigator.clipboard.writeText(
                     ioc.threat.indicator.description,
@@ -59,11 +65,20 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
                   d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
                 />
               </svg>
-              <Typography variant="h3" color="blue-gray">
+              <Typography
+                variant="h3"
+                color="blue-gray"
+                style={{ color: "#2dd4bf", fontFamily: "monospace" }}
+              >
                 {truncateString(ioc.threat.indicator.description)}
               </Typography>
             </div>
-            <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
+            <IconButton
+              variant="text"
+              color="blue-gray"
+              onClick={closeDrawer}
+              style={{ color: "#a1a1aa" }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -80,23 +95,55 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
               </svg>
             </IconButton>
           </div>
-          <Typography variant="small" color="blue-gray" className="block">
+          <Typography
+            variant="small"
+            color="blue-gray"
+            className="block"
+            style={{ color: "#a1a1aa", fontFamily: "monospace" }}
+          >
             [{ioc.threat.indicator.type}]
           </Typography>
         </div>
-        <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
+        <Typography
+          variant="h5"
+          color="gray"
+          className="mb-8 pr-4 font-normal"
+          style={{ color: "gray", fontFamily: "monospace" }}
+        >
           <SecurityLogDisplay ioc={ioc} />
         </Typography>
-        <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
+        <Typography
+          variant="h5"
+          color="gray"
+          className="mb-8 pr-4 font-normal"
+          style={{ color: "gray", fontFamily: "monospace" }}
+        >
           Netflow
         </Typography>
         <NetFlowTable ioc={ioc} />
         <PassiveDNSDrawer ioc={ioc} />
         <div className="flex gap-2">
-          <Button size="sm" variant="outlined">
+          <Button
+            size="sm"
+            variant="outlined"
+            style={{
+              color: "limegreen",
+              borderColor: "limegreen",
+              fontFamily: "monospace",
+            }}
+          >
             Outlined Button
           </Button>
-          <Button size="sm">Filled button</Button>
+          <Button
+            size="sm"
+            style={{
+              backgroundColor: "limegreen",
+              color: "black",
+              fontFamily: "monospace",
+            }}
+          >
+            Filled button
+          </Button>
         </div>
       </Drawer>
     </>

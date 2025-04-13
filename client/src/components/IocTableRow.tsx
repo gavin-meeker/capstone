@@ -16,8 +16,14 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
   };
   //ioc.threat.indicator.description -- ip address for domain, table row component and drawers use of prop
   return (
-    <tr className="relative cursor-pointer hover:bg-gray-50">
-      <td className="border-b border-gray-300 py-4 pl-4">
+    <tr
+      className="relative cursor-pointer hover:bg-gray-50"
+      style={{ color: "limegreen", fontFamily: "monospace" }}
+    >
+      <td
+        className="border-b border-gray-300 py-4 pl-4"
+        style={{ borderBottomColor: "#333", padding: "0.75rem" }}
+      >
         <div className="flex gap-2">
           <Tooltip content="Copy IOC">
             <svg
@@ -27,6 +33,7 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
               strokeWidth="1.5"
               stroke="currentColor"
               className="size-6 text-gray-400 hover:text-gray-600"
+              style={{ color: "#a1a1aa" }}
               onClick={() =>
                 navigator.clipboard.writeText(ioc.threat.indicator.description)
               }
@@ -38,7 +45,14 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
               />
             </svg>
           </Tooltip>
-          <Typography onClick={handleIocClick}>
+          <Typography
+            onClick={handleIocClick}
+            style={{
+              color: "#2dd4bf",
+              fontFamily: "monospace",
+              textDecoration: "underline",
+            }}
+          >
             {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>
         </div>
