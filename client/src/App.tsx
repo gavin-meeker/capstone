@@ -1,16 +1,10 @@
 import { useState } from "react";
 import { api } from "./utils/api";
-import {
-  Button,
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  Textarea,
-} from "@material-tailwind/react";
+import { Button, Textarea } from "@material-tailwind/react";
 import IocTable from "./components/IocTable";
 import { useQuery } from "@tanstack/react-query";
 import { Ioc } from "./types";
+import ExportCsvModal from "./components/ExportCsvModal.tsx";
 
 let testData = `# IPs
 1.2.3.4
@@ -44,7 +38,8 @@ function App() {
 
   const { data, refetch } = useQuery({
     queryKey: ["iocs"],
-    queryFn: () => extractIocs(iocInput),
+    // TODO: refactor this to use tanstack best practices. See https://tanstack.com/query/v4/docs/framework/react/guides/query-functions#query-function-variables
+    queryFn: () => extractIocs(iocInput, false),
     enabled: false,
   });
 
@@ -69,35 +64,70 @@ function App() {
 
   return (
     <>
-      <div className="mx-auto mt-5 w-1/2">
+      <div
+        className="mx-auto mt-5 w-1/2"
+        style={{
+          backgroundColor: "#1e1e1e",
+          color: "@f0f0f0",
+          fontFamily: "monospace",
+        }}
+      >
         <Textarea
           label="Paste IOC"
           resize={true}
           onChange={() => setIocInput(testData)}
           value={testData}
           error={isInputError}
+          className="retro-textarea h-1/3"
+          style={{
+            backgroundColor: "white",
+            color: "blue",
+            textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)",
+            fontFamily: "monospace",
+            borderColor: isInputError ? "#f43f5e" : "00ff00",
+            outlineColor: "cyan",
+          }}
+          labelProps={{
+            style: {
+              color: "white",
+              fontFamily: "monospace",
+              marginTop: "1rem",
+              display: "block",
+            },
+          }}
         />
         <div className="my-3 flex justify-center gap-5">
-          <Button onClick={handleClick}>Extract IOC</Button>
-          <Button onClick={handleOpen}>Export IOC (.csv)</Button>
+          <Button
+            onClick={handleClick}
+            style={{
+              backgroundColor: "#00ff00",
+              color: "#1e1e1e",
+              fontFamily: "monospace",
+            }}
+          >
+            Extract IOC
+          </Button>
+          <Button
+            disabled={!data}
+            onClick={handleOpen}
+            style={{
+              backgroundColor: "#1e1e1e",
+              color: "#00ff00",
+              fontFamily: "monospace",
+              borderColor: "limegreen",
+            }}
+            variant="outlined"
+          >
+            Export IOC (.csv)
+          </Button>
         </div>
-        <Dialog open={open} handler={handleOpen}>
-          <DialogHeader>Not Implemented</DialogHeader>
-          <DialogBody>Not Implemented</DialogBody>
-          <DialogFooter>
-            <Button
-              variant="text"
-              color="red"
-              onClick={handleOpen}
-              className="mr-1"
-            >
-              <span>Cancel</span>
-            </Button>
-            <Button variant="gradient" color="green" onClick={handleOpen}>
-              <span>Confirm</span>
-            </Button>
-          </DialogFooter>
-        </Dialog>
+        {data && (
+          <ExportCsvModal
+            open={open}
+            handleOpen={handleOpen}
+            iocInput={iocInput}
+          />
+        )}
       </div>
       {data && <IocTable iocArray={data.data} />}
     </>
@@ -106,12 +136,16 @@ function App() {
 
 type ExtractionResult = Ioc[];
 
-const extractIocs = async (iocInput: string) => {
-  return await api.post<ExtractionResult>("/extract", iocInput, {
-    headers: {
-      "Content-Type": "text/plain",
+export const extractIocs = async (iocInput: string, shouldDefang = true) => {
+  return await api.post<ExtractionResult>(
+    `/extract?${shouldDefang ? "defang=true" : ""}`,
+    iocInput,
+    {
+      headers: {
+        "Content-Type": "text/plain",
+      },
     },
-  });
+  );
 };
 
 export default App;

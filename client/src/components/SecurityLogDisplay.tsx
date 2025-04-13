@@ -1,97 +1,161 @@
-import React, { useEffect, useState } from "react";
-import { Spinner, Typography } from "@material-tailwind/react";
 import { api } from "../utils/api";
 import { Ioc } from "../types.ts";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 type SecurityLogDisplayProps = {
   ioc: Ioc;
 };
 
-const SECURITY_SOURCES = ["azure", "okta", "prisma", "helios", "email", "suricata"];
+type SecurityLog = {
+  timestamp: string;
+  key: string;
+  logType: string;
+};
 
-const SecurityLogDisplay: React.FC<SecurityLogDisplayProps> = ({ ioc }) => {
-  const [logs, setLogs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  
-  const iocKey = ioc?.threat?.indicator?.description;
-  
-  useEffect(() => {
-    const fetchLogs = async () => {
-      if (!iocKey) return;
-      
-      setLoading(true);
-      try {
-        console.log("Fetching security logs for:", iocKey);
-        const response = await api.get(`/oil/${iocKey}`);
-        const allLogs = response.data?.data || [];
-        
-        console.log("All logs:", allLogs.length);
-        
-        // Filter logs to include only security sources and where the IOC appears in a key field
-        const filteredLogs = allLogs
-          .filter((log: any) => SECURITY_SOURCES.includes(log.oil))
-          .filter((log: any) => {
-            // Check all possible fields where the IOC might appear
-            return (
-              log.key === iocKey ||
-              log.source?.ip === iocKey ||
-              log.client?.ip === iocKey || 
-              log.client?.ipAddress === iocKey ||
-              log.callerIpAddress === iocKey ||
-              log.destination?.ip === iocKey ||
-              log.email?.to?.address === iocKey ||
-              log.email?.from?.address === iocKey ||
-              log.userPrincipalName === iocKey ||
-              log.user?.email === iocKey
-            );
-          })
-          .map((log: any) => ({
-            timestamp: log.timestamp || log["@timestamp"] || "—",
-            key: iocKey, // Always show the queried IOC for consistency
-            oil: log.oil || "—",
-          }));
-        
-        console.log("Filtered logs:", filteredLogs.length);
-        setLogs(filteredLogs);
-      } catch (error) {
-        console.error("Error fetching logs:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchLogs();
-  }, [iocKey]);
+const SECURITY_SOURCES = ["azure", "okta", "prisma", "helios", "email"];
 
-  if (loading) {
+/* Added Styling */
+const retroFont: React.CSSProperties = { fontFamily: "monospace" };
+const retroGreen: React.CSSProperties = { color: "#00ff00" };
+const darkBackground: React.CSSProperties = { backgroundColor: "#000000" };
+const darkSeparator: React.CSSProperties = { borderBottom: "1px solid #333" };
+const greenSeparator: React.CSSProperties = {
+  borderBottom: "1px solid #00ff00",
+};
+const tableSpacing: React.CSSProperties = { padding: "0.5rem" };
+const leftAlign: React.CSSProperties = { textAlign: "left" };
+const smallFontSize: React.CSSProperties = { fontSize: "0.8rem" };
+const marginTopSmall: React.CSSProperties = { marginTop: "0.5rem" };
+const collapseBorders: React.CSSProperties = { borderCollapse: "collapse" };
+const fullWidth: React.CSSProperties = { width: "100%" };
+
+const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
+  const iocKey = getIocKey(ioc);
+
+  const { data, isPending } = useQuery({
+    queryKey: ["securityLogs", iocKey],
+    queryFn: () => api.post(`thecount/oil/${iocKey}`),
+  });
+
+  const filteredLogs =
+    data?.data &&
+    data?.data
+      .filter((log: any) => SECURITY_SOURCES.includes(log.oil))
+      .filter((log: any) => {
+        const valuesToMatch = [
+          log.key,
+          log.source?.ip,
+          log.client?.ip,
+          log.email?.to?.address,
+          log.userPrincipalName,
+          log.user?.email,
+        ];
+        return valuesToMatch.includes(iocKey);
+      })
+      .map(
+        (log: any): SecurityLog => ({
+          timestamp: log.timestamp || log["@timestamp"] || "—",
+          key: iocKey, // ✅ Override key to show searched IOC
+          logType: log.oil || "—",
+        }),
+      );
+
+  if (!iocKey)
     return (
-      <div className="flex justify-center my-4">
-        <Spinner className="h-10 w-10" />
-      </div>
+      <p style={{ ...retroFont, ...retroGreen }}>⚠️ No IOC key provided.</p>
     );
-  }
+  if (isPending)
+    return <p style={{ ...retroFont, ...retroGreen }}>Loading logs...</p>;
 
   return (
-    <div>
-      <h3>Security Logs for IOC: <code>{iocKey}</code></h3>
-      
-      {logs.length === 0 ? (
-        <p>No security logs affiliated with this IOC.</p>
+    <div style={{ ...darkBackground, padding: "1rem" }}>
+      <h3 style={{ ...retroFont, ...retroGreen }}>Security Logs</h3>
+      {filteredLogs.length === 0 ? (
+        <p style={{ ...retroFont, ...retroGreen }}>
+          No security logs affiliated with this IOC.
+        </p>
       ) : (
-        <table className="w-full text-sm table-auto mt-4 border-collapse">
+        <table
+          style={{
+            ...retroFont,
+            ...retroGreen,
+            ...collapseBorders,
+            ...fullWidth,
+            ...marginTopSmall,
+            ...smallFontSize,
+          }}
+        >
           <thead>
             <tr>
-              <th className="text-left p-2 border-b">Timestamp</th>
-              <th className="text-left p-2 border-b">Key</th>
-              <th className="text-left p-2 border-b">Oil</th>
+              <th
+                style={{
+                  ...retroFont,
+                  ...retroGreen,
+                  ...greenSeparator,
+                  ...tableSpacing,
+                  ...leftAlign,
+                }}
+              >
+                Timestamp
+              </th>
+              <th
+                style={{
+                  ...retroFont,
+                  ...retroGreen,
+                  ...greenSeparator,
+                  ...tableSpacing,
+                  ...leftAlign,
+                }}
+              >
+                Key
+              </th>
+              <th
+                style={{
+                  ...retroFont,
+                  ...retroGreen,
+                  ...greenSeparator,
+                  ...tableSpacing,
+                  ...leftAlign,
+                }}
+              >
+                Oil
+              </th>
             </tr>
           </thead>
           <tbody>
-            {logs.map((log, index) => (
-              <tr key={index}>
-                <td className="p-2 border-b">{log.timestamp}</td>
-                <td className="p-2 border-b">{log.key}</td>
-                <td className="p-2 border-b">{log.oil}</td>
+            {filteredLogs.map((log: SecurityLog) => (
+              <tr key={log.key + log.logType}>
+                <td
+                  style={{
+                    ...retroFont,
+                    ...retroGreen,
+                    ...darkSeparator,
+                    ...tableSpacing,
+                  }}
+                >
+                  {log.timestamp}
+                </td>
+                <td
+                  style={{
+                    ...retroFont,
+                    ...retroGreen,
+                    ...darkSeparator,
+                    ...tableSpacing,
+                  }}
+                >
+                  {log.key}
+                </td>
+                <td
+                  style={{
+                    ...retroFont,
+                    ...retroGreen,
+                    ...darkSeparator,
+                    ...tableSpacing,
+                  }}
+                >
+                  {log.logType}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -100,5 +164,17 @@ const SecurityLogDisplay: React.FC<SecurityLogDisplayProps> = ({ ioc }) => {
     </div>
   );
 };
+function getIocKey(ioc: Ioc): string {
+  const rawIocKey = ioc?.threat?.indicator?.description;
+  if (rawIocKey) {
+    try {
+      const url = new URL(rawIocKey);
+      return url.hostname; // strips protocol + path from URLs
+    } catch {
+      return rawIocKey; // not a URL, use as-is (e.g., IP, email)
+    }
+  }
+  return "";
+}
 
 export default SecurityLogDisplay;

@@ -17,6 +17,7 @@ type PassiveDNSModalProps = {
   ioc: Ioc;
   open: boolean;
   handleOpen: () => void;
+  useSummary: boolean; // Add useSummary Prop
 };
 
 const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
@@ -32,12 +33,6 @@ const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
   });
 
   const currentDns = data?.data || undefined;
-  currentDns &&
-    currentDns.forEach(({ dns }) =>
-      dns.answers.map((record) => {
-        console.log(record);
-      }),
-    );
   const tableHeaders = ["Name", "Address", "Type", "First Seen", "Last Seen"];
 
   return (

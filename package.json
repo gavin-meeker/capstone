@@ -6,13 +6,24 @@
   "scripts": {
     "prepare": "husky install",
     "client": "npm run dev --prefix client",
-    "server": "npm run dev --prefix server"
+    "server": "npm run dev --prefix server",
+    "install-client-deps": "cd ./client; npm install",
+    "install-server-deps": "cd ./server; npm install",
+    "install-all-deps": "npm run install-client-deps && npm run install-server-deps"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "lint-staged": {
+    "*.{js,css,md,jsx,scss,ts,tsx}": "prettier --write"
+  },
+  "dependencies": {
+    "axios": "^1.8.1",
+    "dotenv": "^16.4.7"
+  },
   "devDependencies": {
     "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.1"
@@ -24,6 +35,10 @@
     "axios": "^1.8.1",
     "dotenv": "^16.4.7"
   },
+  "prettier": {
+    "plugins": [
+      "./client/node_modules/prettier-plugin-tailwindcss/dist/index.mjs"
+    ]
   "prettier": {
     "plugins": [
       "./client/node_modules/prettier-plugin-tailwindcss/dist/index.mjs"
