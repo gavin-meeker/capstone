@@ -23,11 +23,15 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
     >
       <td
         className="border-b border-gray-300 py-4 pl-4"
-        style={{ borderBottomColor: "#333", padding: "0.75rem" }}
+        style={{ borderBottomColor: "grey", padding: "0.75rem" }}
       >
         <div className="flex gap-2">
           <CopyIcon textToCopy={ioc.threat.indicator.description} />
-          <Typography onClick={handleIocClick}>
+          <Typography
+            onClick={handleIocClick}
+            className="group-hover: text-shadow-[0_0_05px_rgba(0,0,0,0,8)]"
+            style={{ color: "blue", fontFamily: "monospace" }}
+          >
             {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>
         </div>
