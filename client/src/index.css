@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  font-family: monospace, sans-serif;
+}
+
+/* Style for the label of the retro textarea */
+.retro-textarea + div > label {
+  color: #00ff00 !important;
+  font-family: monospace !important;
+  margin-top: 0.5rem;
+}
+
+/* Style for the label when the textarea is focused */
+.retro-textarea:focus + div > label {
+  color: #00ff00 !important;
+  font-family: monospace !important;
+}

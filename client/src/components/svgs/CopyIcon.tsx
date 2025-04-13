@@ -9,6 +9,7 @@ const CopyIcon = ({ textToCopy }: CopyIconProps) => {
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth="1.5"
+        style={{ color: "#a1a1aa" }}
         stroke="currentColor"
         className="size-6 text-gray-400 hover:cursor-pointer hover:text-gray-600"
         onClick={() => navigator.clipboard.writeText(textToCopy)}

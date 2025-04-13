@@ -19,14 +19,35 @@ const IocTable = ({ iocArray }: IocTableProps) => {
   return (
     <>
       <div className="mx-auto h-full w-5/6">
-        <table className="w-full min-w-max table-auto text-left">
+        <table
+          className="w-full min-w-max table-auto text-left"
+          style={{
+            color: "limegreen",
+            fontFamily: "monospace",
+            borderCollapse: "collapse",
+          }}
+        >
           <thead>
             <tr>
-              <th className="border-b border-gray-100 bg-gray-200 p-4">
+              <th
+                className="border-b border-gray-100 bg-gray-200 p-4"
+                style={{
+                  backgroundColor: "black",
+                  borderBottom: "1px solid limegreen",
+                  padding: "0.75rem",
+                  textAlign: "left",
+                }}
+              >
                 <Typography
                   variant="small"
                   color="blue-gray"
                   className="font-bold leading-none"
+                  style={{
+                    backgroundColor: "black",
+                    borderBottom: "1px solid limegreen",
+                    padding: "0.75rem",
+                    textAlign: "left",
+                  }}
                 >
                   IOC
                 </Typography>

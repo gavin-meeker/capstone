@@ -17,8 +17,14 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
   };
   //ioc.threat.indicator.description -- ip address for domain, table row component and drawers use of prop
   return (
-    <tr className="relative cursor-pointer hover:bg-gray-50">
-      <td className="border-b border-gray-300 py-4 pl-4">
+    <tr
+      className="relative cursor-pointer hover:bg-gray-50"
+      style={{ color: "limegreen", fontFamily: "monospace" }}
+    >
+      <td
+        className="border-b border-gray-300 py-4 pl-4"
+        style={{ borderBottomColor: "#333", padding: "0.75rem" }}
+      >
         <div className="flex gap-2">
           <CopyIcon textToCopy={ioc.threat.indicator.description} />
           <Typography onClick={handleIocClick}>

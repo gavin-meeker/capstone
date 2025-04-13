@@ -34,6 +34,11 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         open={isOpen}
         onClose={closeDrawer}
         className="p-4"
+        style={{
+          backgroundColor: "black",
+          color: "limegreen",
+          fontFamily: "monospace",
+        }}
         // overlayProps={{ className: "bg-black/25 shadow-none" }}
         overlay={false}
       >
@@ -41,11 +46,20 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CopyIcon textToCopy={ioc.threat.indicator.description} />
-              <Typography variant="h3" color="blue-gray">
+              <Typography
+                variant="h3"
+                color="blue-gray"
+                style={{ color: "#2dd4bf", fontFamily: "monospace" }}
+              >
                 {truncateString(ioc.threat.indicator.description)}
               </Typography>
             </div>
-            <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
+            <IconButton
+              variant="text"
+              color="blue-gray"
+              onClick={closeDrawer}
+              style={{ color: "#a1a1aa" }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -62,23 +76,55 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
               </svg>
             </IconButton>
           </div>
-          <Typography variant="small" color="blue-gray" className="block">
+          <Typography
+            variant="small"
+            color="blue-gray"
+            className="block"
+            style={{ color: "#a1a1aa", fontFamily: "monospace" }}
+          >
             [{ioc.threat.indicator.type}]
           </Typography>
         </div>
-        <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
+        <Typography
+          variant="h5"
+          color="gray"
+          className="mb-8 pr-4 font-normal"
+          style={{ color: "gray", fontFamily: "monospace" }}
+        >
           <SecurityLogDisplay ioc={ioc} />
         </Typography>
-        <Typography variant="h5" color="gray" className="mb-8 pr-4 font-normal">
+        <Typography
+          variant="h5"
+          color="gray"
+          className="mb-8 pr-4 font-normal"
+          style={{ color: "gray", fontFamily: "monospace" }}
+        >
           Netflow
         </Typography>
         <NetFlowTable ioc={ioc} />
         <PassiveDNSDrawer ioc={ioc} />
         <div className="flex gap-2">
-          <Button size="sm" variant="outlined">
+          <Button
+            size="sm"
+            variant="outlined"
+            style={{
+              color: "limegreen",
+              borderColor: "limegreen",
+              fontFamily: "monospace",
+            }}
+          >
             Outlined Button
           </Button>
-          <Button size="sm">Filled button</Button>
+          <Button
+            size="sm"
+            style={{
+              backgroundColor: "limegreen",
+              color: "black",
+              fontFamily: "monospace",
+            }}
+          >
+            Filled button
+          </Button>
         </div>
       </Drawer>
     </>

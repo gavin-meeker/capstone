@@ -64,18 +64,60 @@ function App() {
 
   return (
     <>
-      <div className="mx-auto mt-5 w-1/2">
+      <div
+        className="mx-auto mt-5 w-1/2"
+        style={{
+          backgroundColor: "#1e1e1e",
+          color: "@f0f0f0",
+          fontFamily: "monospace",
+        }}
+      >
         <Textarea
           label="Paste IOC"
           resize={true}
           onChange={() => setIocInput(testData)}
           value={testData}
           error={isInputError}
-          className="h-1/3"
+          className="retro-textarea h-1/3"
+          style={{
+            backgroundColor: "white",
+            color: "blue",
+            textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)",
+            fontFamily: "monospace",
+            borderColor: isInputError ? "#f43f5e" : "00ff00",
+            outlineColor: "cyan",
+          }}
+          labelProps={{
+            style: {
+              color: "white",
+              fontFamily: "monospace",
+              marginTop: "1rem",
+              display: "block",
+            },
+          }}
         />
         <div className="my-3 flex justify-center gap-5">
-          <Button onClick={handleClick}>Extract IOC</Button>
-          <Button disabled={!data} onClick={handleOpen}>
+          <Button
+            onClick={handleClick}
+            style={{
+              backgroundColor: "#00ff00",
+              color: "#1e1e1e",
+              fontFamily: "monospace",
+            }}
+          >
+            Extract IOC
+          </Button>
+          <Button
+            disabled={!data}
+            onClick={handleOpen}
+            style={{
+              backgroundColor: "#1e1e1e",
+              color: "#00ff00",
+              fontFamily: "monospace",
+              borderColor: "limegreen",
+            }}
+            variant="outlined"
+          >
             Export IOC (.csv)
           </Button>
         </div>
