@@ -103,12 +103,8 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
         }),
       );
 
-  if (!iocKey)
-    return (
-      <p style={{ ...retroFont, ...retroGreen }}>⚠️ No IOC key provided.</p>
-    );
-  if (isPending)
-    return <p style={{ ...retroFont, ...retroGreen }}>Loading logs...</p>;
+  if (!iocKey) return <p>No IOC key provided.</p>;
+  if (isPending) return <p>Loading logs...</p>;
 
   return (
     <div style={{ ...darkBackground, padding: "1rem" }}>
