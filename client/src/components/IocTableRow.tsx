@@ -15,16 +15,29 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
     setCurrentIoc(ioc);
     openDrawer();
   };
-  //ioc.threat.indicator.description -- ip address for domain, table row component and drawers use of prop
+
   return (
     <tr className="relative cursor-pointer hover:bg-gray-50">
+      {/* IOC Description Cell */}
       <td className="border-b border-gray-300 py-4 pl-4">
         <div className="flex gap-2">
           <CopyIcon textToCopy={ioc.threat.indicator.description} />
-          <Typography onClick={handleIocClick}>
+          <Typography onClick={handleIocClick} className="hover:underline">
             {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>
         </div>
+      </td>
+
+      {/* ELK Link Cell */}
+      <td className="border-b border-gray-300 py-4 pl-4">
+        <a
+          href="https://cloud.elastic.co/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          ELK
+        </a>
       </td>
     </tr>
   );

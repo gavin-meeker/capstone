@@ -87,7 +87,7 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
         }),
       );
 
-  if (!iocKey) return <p>⚠️ No IOC key provided.</p>;
+  if (!iocKey) return <p>No IOC key provided.</p>;
   if (isPending) return <p>Loading logs...</p>;
 
   return (
