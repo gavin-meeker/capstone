@@ -6,6 +6,12 @@ type SecurityLogDisplayProps = {
   ioc: Ioc;
 };
 
+type SecurityLog = {
+  timestamp: string;
+  key: string;
+  logType: string;
+};
+
 const SECURITY_SOURCES = ["azure", "okta", "prisma", "helios", "email"];
 
 const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
@@ -31,11 +37,13 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
         ];
         return valuesToMatch.includes(iocKey);
       })
-      .map((log: any) => ({
-        timestamp: log.timestamp || log["@timestamp"] || "—",
-        key: iocKey, // ✅ Override key to show searched IOC
-        oil: log.oil || "—",
-      }));
+      .map(
+        (log: any): SecurityLog => ({
+          timestamp: log.timestamp || log["@timestamp"] || "—",
+          key: iocKey, // ✅ Override key to show searched IOC
+          logType: log.oil || "—",
+        }),
+      );
 
   if (!iocKey) return <p>⚠️ No IOC key provided.</p>;
   if (isPending) return <p>Loading logs...</p>;
@@ -55,11 +63,11 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
             </tr>
           </thead>
           <tbody>
-            {filteredLogs.map((log) => (
-              <tr key={log.key}>
+            {filteredLogs.map((log: SecurityLog) => (
+              <tr key={log.key + log.logType}>
                 <td className="border-b p-2">{log.timestamp}</td>
                 <td className="border-b p-2">{log.key}</td>
-                <td className="border-b p-2">{log.oil}</td>
+                <td className="border-b p-2">{log.logType}</td>
               </tr>
             ))}
           </tbody>
