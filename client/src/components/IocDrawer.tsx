@@ -33,8 +33,7 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         size={800}
         open={isOpen}
         onClose={closeDrawer}
-        className="p-4"
-        // overlayProps={{ className: "bg-black/25 shadow-none" }}
+        className="max-h-screen overflow-y-auto p-4"
         overlay={false}
       >
         <div className="mb-6">
