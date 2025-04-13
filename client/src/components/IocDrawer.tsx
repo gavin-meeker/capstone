@@ -17,14 +17,6 @@ type IocDrawerProps = {
   isOpen: boolean;
 };
 
-type OilData = {
-  oil: string;
-  [key: string]: any; // for other fields you're not directly using
-};
-
-type OilResponse = {
-  data: OilData[];
-};
 const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
   return (
     <>
@@ -84,8 +76,8 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           >
             [{ioc.threat.indicator.type}]
           </Typography>
-          {ioc.threat.indicator.type === "ipv4-addr" ||
-          ioc.threat.indicator.type === "ipv6-addr" ? (
+          {(ioc.threat.indicator.type === "ipv4-addr" ||
+            ioc.threat.indicator.type === "ipv6-addr") && (
             <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
               <a
                 target="_blank"
@@ -112,10 +104,6 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
                 BGPView
               </a>
             </div>
-          ) : (
-            <p className="mt-2 text-sm italic text-gray-500">
-              External tools only available for IP addresses.
-            </p>
           )}
         </div>
         <Typography
