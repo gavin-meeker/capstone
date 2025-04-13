@@ -84,6 +84,39 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           >
             [{ioc.threat.indicator.type}]
           </Typography>
+          {ioc.threat.indicator.type === "ipv4-addr" ||
+          ioc.threat.indicator.type === "ipv6-addr" ? (
+            <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
+              <a
+                target="_blank"
+                href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
+              >
+                Shodan
+              </a>
+              <a
+                target="_blank"
+                href={`https://search.censys.io/hosts/${ioc.threat.indicator.description}`}
+              >
+                Censys
+              </a>
+              <a
+                target="_blank"
+                href={`https://spur.us/context/${ioc.threat.indicator.description}`}
+              >
+                Spur
+              </a>
+              <a
+                target="_blank"
+                href={`https://bgpview.io/ip/${ioc.threat.indicator.description}`}
+              >
+                BGPView
+              </a>
+            </div>
+          ) : (
+            <p className="mt-2 text-sm italic text-gray-500">
+              External tools only available for IP addresses.
+            </p>
+          )}
         </div>
         <Typography
           variant="h5"
