@@ -5,7 +5,7 @@
 body {
   background-color: #1e1e1e;
   color: #f0f0f0;
-  font-family: monospace, sans-serif;
+  font-family: monospace;
 }
 
 /* Style for the label of the retro textarea */
@@ -19,4 +19,8 @@ body {
 .retro-textarea:focus + div > label {
   color: #00ff00 !important;
   font-family: monospace !important;
+}
+
+.p-4 {
+  background-color: #1e1e1e;
 }

@@ -30,7 +30,7 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
           <Typography
             onClick={handleIocClick}
             className="group-hover: text-shadow-[0_0_05px_rgba(0,0,0,0,8)]"
-            style={{ color: "blue", fontFamily: "monospace" }}
+            style={{ color: "Teal", fontFamily: "monospace" }}
           >
             {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>

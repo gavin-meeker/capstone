@@ -44,13 +44,15 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
       <div className="mb-4 flex items-center justify-between">
         <Typography
           variant="h5"
-          color="gray"
+          color="black"
           //TODO: need to conditionally add class names (hover state) based on if there are dns records
           style={{
             fontFamily: "monospace",
-            color: "black",
+            color: "limegreen",
             cursor: "pointer",
             fontWeight: "normal",
+            textAlign: "left",
+            padding: "1rem",
           }}
           className="mb-8 cursor-pointer pr-4 font-normal hover:text-blue-400"
           onClick={handleOpen}
@@ -63,13 +65,17 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
           )}
         </Typography>
         <div className="flex items-center">
-          <Typography variant="small" className="mr-2">
+          <Typography
+            variant="small"
+            className="mr-2"
+            style={{ color: "white", fontFamily: "monospace" }}
+          >
             Summary
           </Typography>
           <Switch
             checked={useSummary}
             onChange={handleSummarySwitch}
-            color="blue"
+            color="green"
           />
         </div>
       </div>

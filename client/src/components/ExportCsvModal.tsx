@@ -76,14 +76,27 @@ const ExportCsvModal = ({
         </DialogBody>
         <DialogFooter>
           <Button
-            variant="text"
-            color="red"
+            variant="gradient"
+            color="black"
+            style={{
+              color: "red",
+              fontFamily: "monospace",
+              textDecorationColor: "black",
+            }}
             onClick={handleOpen}
             className="mr-1"
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleIocCsv}>
+          <Button
+            variant="gradient"
+            onClick={handleIocCsv}
+            style={{
+              color: "limegreen",
+              fontFamily: "monospace",
+              textDecorationColor: "black",
+            }}
+          >
             <span>Download CSV</span>
           </Button>
         </DialogFooter>

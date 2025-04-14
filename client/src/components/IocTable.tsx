@@ -49,7 +49,7 @@ const IocTable = ({ iocArray }: IocTableProps) => {
                     textAlign: "left",
                   }}
                 >
-                  IOC
+                  IOC List
                 </Typography>
               </th>
             </tr>
