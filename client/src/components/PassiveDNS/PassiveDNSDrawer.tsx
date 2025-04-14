@@ -1,8 +1,8 @@
 import { Switch, Typography, Spinner } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../../utils/api.js";
-import { Ioc } from "../../types.ts";
-import PassiveDNSModal from "./PassiveDNSModal.tsx";
+import { api } from "../../utils/api";
+import { Ioc } from "../../types";
+import PassiveDNSModal from "./PassiveDNSModal";
 import { useState } from "react";
 
 type PassiveDNSDrawerProps = {
@@ -11,12 +11,18 @@ type PassiveDNSDrawerProps = {
 
 const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [useSummary, setUseSummary] = useState<boolean>(true); // Add Switch State for DNS
+  const [useSummary, setUseSummary] = useState<boolean>(true);
 
   const handleOpen = () => setOpen(!open);
+  
+  // Use the ioc description and summary state in the query key
   const { isPending, data, error } = useQuery({
-    queryKey: ["passiveDnsCount", ioc.threat.indicator.description, useSummary], // Add Switch to query key
+    queryKey: ["passiveDnsCount", ioc.threat.indicator.description, useSummary],
     queryFn: () => getPassiveDnsCount(ioc, useSummary),
+    // Don't refetch on window focus for passive data
+    refetchOnWindowFocus: false,
+    // Increase stale time since this data doesn't change often
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const handleSummarySwitch = () => {
@@ -25,19 +31,23 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
 
   if (isPending) {
     return (
-      <Spinner
-        className="h-10 w-10"
-        color="purple"
-        style={{ fontFamily: "monospace", color: "#f0f0f0" }}
-      />
-    ); //Show Spinner while data is loading
+      <div className="flex justify-center my-4">
+        <Spinner className="h-10 w-10" />
+      </div>
+    );
   }
 
   if (error) {
-    return <Typography color="red">Error Loading Data.</Typography>; //Added Error message
+    return (
+      <Typography color="red" className="my-4">
+        Error loading DNS data: {error instanceof Error ? error.message : "Unknown error"}
+      </Typography>
+    );
   }
 
-  const hasDnsRecords = !isPending && (data?.data?.length ?? 0) > 0;
+  // Check if we have DNS records to display
+  const hasDnsRecords = !isPending && (data?.length ?? 0) > 0;
+  const recordCount = hasDnsRecords ? data?.[0]?.count : 0;
 
   return (
     <>
@@ -45,23 +55,15 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
         <Typography
           variant="h5"
           color="gray"
-          //TODO: need to conditionally add class names (hover state) based on if there are dns records
-          style={{
-            fontFamily: "monospace",
-            color: "black",
-            cursor: "pointer",
-            fontWeight: "normal",
-          }}
-          className="mb-8 cursor-pointer pr-4 font-normal hover:text-blue-400"
-          onClick={handleOpen}
+          className={`mb-8 pr-4 font-normal ${
+            hasDnsRecords ? "cursor-pointer hover:text-blue-400" : "opacity-50"
+          }`}
+          onClick={hasDnsRecords ? handleOpen : undefined}
         >
           Passive DNS
-          {hasDnsRecords && (
-            <span style={{ fontFamily: "monospace", color: "black" }}>
-              ({data?.data[0].count.toLocaleString()} Records)
-            </span>
-          )}
+          {hasDnsRecords && ` (${recordCount.toLocaleString()} Records)`}
         </Typography>
+        
         <div className="flex items-center">
           <Typography variant="small" className="mr-2">
             Summary
@@ -70,16 +72,24 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
             checked={useSummary}
             onChange={handleSummarySwitch}
             color="blue"
+            disabled={!hasDnsRecords}
           />
         </div>
       </div>
+      
+      {!hasDnsRecords && (
+        <Typography color="gray" className="italic text-sm mb-4">
+          No DNS records found for this indicator.
+        </Typography>
+      )}
+      
       {hasDnsRecords && (
         <PassiveDNSModal
           ioc={ioc}
           open={open}
           handleOpen={handleOpen}
           useSummary={useSummary}
-        /> // Pass useSummary down to the modal
+        />
       )}
     </>
   );
@@ -87,24 +97,33 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
 
 type PassiveDnsSummary = {
   host: {
-    ip: string[];
+    ip?: string[];
+    name?: string[];
   };
   count: number;
-  num_results: number;
+  num_results?: number;
   event: {
     start: string;
     end: string;
   };
 };
 
-type PassiveDnsSummaryResult = PassiveDnsSummary[];
-
+/**
+ * Fetches passive DNS count data for an IOC
+ */
 const getPassiveDnsCount = async (ioc: Ioc, useSummary: boolean) => {
-  const summaryEndpoint = `thecount/pdns/${ioc.threat.indicator.description}/_summary`;
-  const fullEndpoint = `thecount/pdns/${ioc.threat.indicator.description}`;
-
-  const endpoint = useSummary ? summaryEndpoint : fullEndpoint;
-  return await api.post<PassiveDnsSummaryResult>(endpoint);
+  const iocValue = ioc.threat.indicator.description;
+  const endpoint = useSummary 
+    ? `thecount/pdns/${iocValue}/_summary`
+    : `thecount/pdns/${iocValue}`;
+  
+  try {
+    const response = await api.post(endpoint);
+    return response.data || [];
+  } catch (error) {
+    console.error("Error fetching passive DNS data:", error);
+    return [];
+  }
 };
 
 export default PassiveDNSDrawer;

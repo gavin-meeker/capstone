@@ -5,11 +5,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { truncateString } from "../utils/helpers";
-import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
-import { Ioc } from "../types.ts";
-import SecurityLogDisplay from "./SecurityLogDisplay.tsx";
-import NetFlowTable from "./Netflow/NetFlowTable.tsx";
-import CopyIcon from "./svgs/CopyIcon.tsx";
+import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer";
+import { Ioc } from "../types";
+import SecurityLogDisplay from "./SecurityLogDisplay";
+import NetFlowTable from "./NetFlowTable";
 
 type IocDrawerProps = {
   ioc: Ioc;
@@ -17,150 +16,107 @@ type IocDrawerProps = {
   isOpen: boolean;
 };
 
-type OilData = {
-  oil: string;
-  [key: string]: any; // for other fields you're not directly using
-};
-
-type OilResponse = {
-  data: OilData[];
-};
 const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
+  // Determine IOC type for display
+  const iocType = ioc.threat.indicator.type;
+
   return (
-    <>
-      <Drawer
-        placement={"right"}
-        size={800}
-        open={isOpen}
-        onClose={closeDrawer}
-        className="p-4"
-        style={{
-          backgroundColor: "black",
-          color: "limegreen",
-          fontFamily: "monospace",
-        }}
-        // overlayProps={{ className: "bg-black/25 shadow-none" }}
-        overlay={false}
-      >
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CopyIcon textToCopy={ioc.threat.indicator.description} />
-              <Typography
-                variant="h3"
-                color="blue-gray"
-                style={{ color: "#2dd4bf", fontFamily: "monospace" }}
-              >
-                {truncateString(ioc.threat.indicator.description)}
-              </Typography>
-            </div>
-            <IconButton
-              variant="text"
-              color="blue-gray"
-              onClick={closeDrawer}
-              style={{ color: "#a1a1aa" }}
+    <Drawer
+      placement="right"
+      size={800}
+      open={isOpen}
+      onClose={closeDrawer}
+      className="p-4"
+      overlay={false}
+    >
+      {/* Header area */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          {/* Copy button */}
+          <button
+            onClick={() => navigator.clipboard.writeText(ioc.threat.indicator.description)}
+            className="p-1 rounded hover:bg-gray-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6 text-gray-600 hover:text-gray-800"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </IconButton>
-          </div>
-          <Typography
-            variant="small"
-            color="blue-gray"
-            className="block"
-            style={{ color: "#a1a1aa", fontFamily: "monospace" }}
-          >
-            [{ioc.threat.indicator.type}]
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
+              />
+            </svg>
+          </button>
+          
+          <Typography variant="h3" className="text-gray-900">
+            {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>
-          {ioc.threat.indicator.type === "ipv4-addr" ||
-          ioc.threat.indicator.type === "ipv6-addr" ? (
-            <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
-              <a
-                target="_blank"
-                href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
-              >
-                Shodan
-              </a>
-              <a
-                target="_blank"
-                href={`https://search.censys.io/hosts/${ioc.threat.indicator.description}`}
-              >
-                Censys
-              </a>
-              <a
-                target="_blank"
-                href={`https://spur.us/context/${ioc.threat.indicator.description}`}
-              >
-                Spur
-              </a>
-              <a
-                target="_blank"
-                href={`https://bgpview.io/ip/${ioc.threat.indicator.description}`}
-              >
-                BGPView
-              </a>
-            </div>
-          ) : (
-            <p className="mt-2 text-sm italic text-gray-500">
-              External tools only available for IP addresses.
-            </p>
-          )}
         </div>
-        <Typography
-          variant="h5"
-          color="gray"
-          className="mb-8 pr-4 font-normal"
-          style={{ color: "gray", fontFamily: "monospace" }}
-        >
-          <SecurityLogDisplay ioc={ioc} />
-        </Typography>
-        <Typography
-          variant="h5"
-          color="gray"
-          className="mb-8 pr-4 font-normal"
-          style={{ color: "gray", fontFamily: "monospace" }}
-        >
-          Netflow
-        </Typography>
-        <NetFlowTable ioc={ioc} />
-        <PassiveDNSDrawer ioc={ioc} />
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="outlined"
-            style={{
-              color: "limegreen",
-              borderColor: "limegreen",
-              fontFamily: "monospace",
-            }}
+        
+        {/* Close button */}
+        <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="h-5 w-5"
           >
-            Outlined Button
-          </Button>
-          <Button
-            size="sm"
-            style={{
-              backgroundColor: "limegreen",
-              color: "black",
-              fontFamily: "monospace",
-            }}
-          >
-            Filled button
-          </Button>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </IconButton>
+      </div>
+      
+      {/* IOC Type */}
+      <Typography variant="small" color="blue-gray" className="block mb-4 text-gray-800">
+        [{iocType}]
+      </Typography>
+
+      {/* Security Logs Section */}
+      <div className="mb-6">
+        <SecurityLogDisplay ioc={ioc} />
+      </div>
+      
+      {/* Network Flow Section */}
+      <NetFlowTable ioc={ioc} />
+      
+      {/* Passive DNS Section - for IP addresses and domains */}
+      {(iocType === "ipv4-addr" || iocType === "ipv6-addr" || iocType === "domain-name") && (
+        <div className="mb-6">
+          <PassiveDNSDrawer ioc={ioc} />
         </div>
-      </Drawer>
-    </>
+      )}
+      
+      {/* Action Buttons */}
+      <div className="flex gap-2 mt-6">
+        <Button 
+          size="sm" 
+          variant="outlined" 
+          color="blue-gray" 
+          onClick={closeDrawer}
+          className="text-gray-800"
+        >
+          Close
+        </Button>
+        <Button 
+          size="sm"
+          color="blue"
+          className="text-white"
+        >
+          Export Data
+        </Button>
+      </div>
+    </Drawer>
   );
 };
 

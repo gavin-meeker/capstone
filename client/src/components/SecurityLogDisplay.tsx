@@ -1,180 +1,123 @@
+import React, { useEffect, useState } from "react";
 import { api } from "../utils/api";
-import { Ioc } from "../types.ts";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { Ioc, SecurityLog, LogSource } from "../types";
+import { Spinner, Typography } from "@material-tailwind/react";
 
 type SecurityLogDisplayProps = {
   ioc: Ioc;
 };
 
-type SecurityLog = {
-  timestamp: string;
-  key: string;
-  logType: string;
-};
+// List of security log sources to include
+const SECURITY_SOURCES: LogSource[] = ["azure", "okta", "prisma", "helios", "email", "suricata"];
 
-const SECURITY_SOURCES = ["azure", "okta", "prisma", "helios", "email"];
+const SecurityLogDisplay: React.FC<SecurityLogDisplayProps> = ({ ioc }) => {
+  const [logs, setLogs] = useState<SecurityLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-/* Added Styling */
-const retroFont: React.CSSProperties = { fontFamily: "monospace" };
-const retroGreen: React.CSSProperties = { color: "#00ff00" };
-const darkBackground: React.CSSProperties = { backgroundColor: "#000000" };
-const darkSeparator: React.CSSProperties = { borderBottom: "1px solid #333" };
-const greenSeparator: React.CSSProperties = {
-  borderBottom: "1px solid #00ff00",
-};
-const tableSpacing: React.CSSProperties = { padding: "0.5rem" };
-const leftAlign: React.CSSProperties = { textAlign: "left" };
-const smallFontSize: React.CSSProperties = { fontSize: "0.8rem" };
-const marginTopSmall: React.CSSProperties = { marginTop: "0.5rem" };
-const collapseBorders: React.CSSProperties = { borderCollapse: "collapse" };
-const fullWidth: React.CSSProperties = { width: "100%" };
+  // Clean IOC key to handle URLs and other special formats
+  function cleanIocKey(raw: string): string {
+    try {
+      // Try to parse as URL
+      const url = new URL(raw);
+      return url.hostname; // strips protocol + path from URLs
+    } catch {
+      return raw; // not a URL, use as-is (e.g., IP, email)
+    }
+  }
 
-const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
-  const iocKey = getIocKey(ioc);
+  const rawIocKey = ioc?.threat?.indicator?.description || ioc?.key;
+  const iocKey = rawIocKey ? cleanIocKey(rawIocKey) : undefined;
 
-  const { data, isPending } = useQuery({
-    queryKey: ["securityLogs", iocKey],
-    queryFn: () => api.post(`thecount/oil/${iocKey}`),
-  });
+  useEffect(() => {
+    if (!iocKey) return;
 
-  const filteredLogs =
-    data?.data &&
-    data?.data
-      .filter((log: any) => SECURITY_SOURCES.includes(log.oil))
-      .filter((log: any) => {
-        const valuesToMatch = [
-          log.key,
-          log.source?.ip,
-          log.client?.ip,
-          log.email?.to?.address,
-          log.userPrincipalName,
-          log.user?.email,
-        ];
-        return valuesToMatch.includes(iocKey);
-      })
-      .map(
-        (log: any): SecurityLog => ({
-          timestamp: log.timestamp || log["@timestamp"] || "—",
-          key: iocKey, // ✅ Override key to show searched IOC
-          logType: log.oil || "—",
-        }),
-      );
+    setLogs([]);
+    setLoading(true);
+    setError(null);
 
-  if (!iocKey)
+    const fetchLogs = async () => {
+      try {
+        // Fetch all logs for this IOC
+        const response = await api.post(`/thecount/oil/${iocKey}`);
+        const allLogs = response.data || [];
+
+        // Process logs for display
+        const formattedLogs = allLogs
+          // Filter for security-relevant sources (not netflow)
+          .filter((log: any) => log.oil !== "netflow")
+          // Filter for logs that actually reference our IOC
+          .filter((log: any) => {
+            // Check if this log references our IOC
+            return log.key === iocKey || log.source?.ip === iocKey || log.client?.ipAddress === iocKey;
+          })
+          // Map to the simple format needed for display
+          .map((log: any) => ({
+            timestamp: log.timestamp || log["@timestamp"] || "—",
+            key: iocKey,
+            oil: log.oil || "—"
+          }));
+
+        setLogs(formattedLogs);
+      } catch (error) {
+        console.error("Error fetching security logs:", error);
+        setError("Failed to load security logs. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLogs();
+  }, [iocKey]);
+
+  if (!iocKey) return null;
+  
+  if (loading) {
     return (
-      <p style={{ ...retroFont, ...retroGreen }}>⚠️ No IOC key provided.</p>
+      <div className="flex justify-center my-2">
+        <Spinner className="h-8 w-8" />
+      </div>
     );
-  if (isPending)
-    return <p style={{ ...retroFont, ...retroGreen }}>Loading logs...</p>;
+  }
+  
+  if (error) {
+    return <Typography className="text-red-600">{error}</Typography>;
+  }
 
   return (
-    <div style={{ ...darkBackground, padding: "1rem" }}>
-      <h3 style={{ ...retroFont, ...retroGreen }}>Security Logs</h3>
-      {filteredLogs.length === 0 ? (
-        <p style={{ ...retroFont, ...retroGreen }}>
-          No security logs affiliated with this IOC.
-        </p>
+    <div>
+      <Typography variant="h5" className="mb-2 text-gray-900 font-medium">
+        Security Logs for IOC: {iocKey}
+      </Typography>
+      
+      {logs.length === 0 ? (
+        <Typography className="text-gray-700 italic">
+          No security logs found for this indicator.
+        </Typography>
       ) : (
-        <table
-          style={{
-            ...retroFont,
-            ...retroGreen,
-            ...collapseBorders,
-            ...fullWidth,
-            ...marginTopSmall,
-            ...smallFontSize,
-          }}
-        >
-          <thead>
-            <tr>
-              <th
-                style={{
-                  ...retroFont,
-                  ...retroGreen,
-                  ...greenSeparator,
-                  ...tableSpacing,
-                  ...leftAlign,
-                }}
-              >
-                Timestamp
-              </th>
-              <th
-                style={{
-                  ...retroFont,
-                  ...retroGreen,
-                  ...greenSeparator,
-                  ...tableSpacing,
-                  ...leftAlign,
-                }}
-              >
-                Key
-              </th>
-              <th
-                style={{
-                  ...retroFont,
-                  ...retroGreen,
-                  ...greenSeparator,
-                  ...tableSpacing,
-                  ...leftAlign,
-                }}
-              >
-                Oil
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredLogs.map((log: SecurityLog) => (
-              <tr key={log.key + log.logType}>
-                <td
-                  style={{
-                    ...retroFont,
-                    ...retroGreen,
-                    ...darkSeparator,
-                    ...tableSpacing,
-                  }}
-                >
-                  {log.timestamp}
-                </td>
-                <td
-                  style={{
-                    ...retroFont,
-                    ...retroGreen,
-                    ...darkSeparator,
-                    ...tableSpacing,
-                  }}
-                >
-                  {log.key}
-                </td>
-                <td
-                  style={{
-                    ...retroFont,
-                    ...retroGreen,
-                    ...darkSeparator,
-                    ...tableSpacing,
-                  }}
-                >
-                  {log.logType}
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-max table-auto text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="py-2 px-3 border-b border-gray-300 text-gray-800 font-medium">Timestamp</th>
+                <th className="py-2 px-3 border-b border-gray-300 text-gray-800 font-medium">Key</th>
+                <th className="py-2 px-3 border-b border-gray-300 text-gray-800 font-medium">Oil</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-gray-700">
+              {logs.map((log, index) => (
+                <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
+                  <td className="py-1 px-3">{log.timestamp}</td>
+                  <td className="py-1 px-3">{log.key}</td>
+                  <td className="py-1 px-3">{log.oil}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
 };
-function getIocKey(ioc: Ioc): string {
-  const rawIocKey = ioc?.threat?.indicator?.description;
-  if (rawIocKey) {
-    try {
-      const url = new URL(rawIocKey);
-      return url.hostname; // strips protocol + path from URLs
-    } catch {
-      return rawIocKey; // not a URL, use as-is (e.g., IP, email)
-    }
-  }
-  return "";
-}
 
 export default SecurityLogDisplay;

@@ -1,2 +1,33 @@
 @import "tailwindcss";
 @source "../node_modules/@material-tailwind";
+
+/* Override for better contrast and spacing in IOC drawer */
+.ioc-drawer-content {
+    color: #1f2937; /* darker text color */
+    font-weight: 500; /* slightly bolder text */
+  }
+  
+  /* Compact table styles */
+  .compact-table td, 
+  .compact-table th {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+  
+  /* Ensure table sections have proper spacing */
+  .table-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Make section titles more prominent */
+  .section-title {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Red highlighting for matched IOCs */
+  .matched-ioc {
+    color: #dc2626;
+    font-weight: 500;
+  }

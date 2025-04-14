@@ -1,29 +1,27 @@
 {
   "name": "capstone",
   "version": "1.0.0",
-  "description": "## For Development",
+  "description": "SOC Investigation Tool",
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
     "client": "npm run dev --prefix client",
     "server": "npm run dev --prefix server",
-    "install-client-deps": "cd ./client; npm install",
-    "install-server-deps": "cd ./server; npm install",
-    "install-all-deps": "npm run install-client-deps && npm run install-server-deps"
+    "count": "cd server/count-fakeula && . venv/bin/activate && python main.py -d",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run count\"",
+    "dev:no-count": "concurrently \"npm run server\" \"npm run client\"",
+    "lint": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md}\"",
+    "test": "echo \"No tests yet\" && exit 0"
   },
-  "keywords": [],
+  "keywords": [
+    "soc",
+    "security",
+    "investigation"
+  ],
   "author": "",
   "license": "ISC",
-  "lint-staged": {
-    "*.{js,css,md,jsx,scss,ts,tsx}": "prettier --write"
-  },
-  "dependencies": {
-    "axios": "^1.8.1",
-    "dotenv": "^16.4.7"
-  },
   "devDependencies": {
     "concurrently": "^9.1.2",
-    "cross-env": "^7.0.3",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.1"
@@ -35,10 +33,6 @@
     "axios": "^1.8.1",
     "dotenv": "^16.4.7"
   },
-  "prettier": {
-    "plugins": [
-      "./client/node_modules/prettier-plugin-tailwindcss/dist/index.mjs"
-    ]
   "prettier": {
     "plugins": [
       "./client/node_modules/prettier-plugin-tailwindcss/dist/index.mjs"

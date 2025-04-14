@@ -1,10 +1,20 @@
 /** @type {import('tailwindcss').Config} */
-// @ts-ignore material ui makes you do this
-const withMT = require("@material-tailwind/react/utils/withMT");
-export default withMT({
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        // Darker text colors for better readability
+        'gray': {
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+        },
+      },
+    },
   },
   plugins: [],
-});
+}
