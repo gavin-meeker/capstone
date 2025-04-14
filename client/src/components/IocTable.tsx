@@ -33,19 +33,19 @@ const IocTable = ({ iocArray }: IocTableProps) => {
                 className="border-b border-gray-100 bg-gray-200 p-4"
                 style={{
                   backgroundColor: "black",
-                  borderBottom: "1px solid limegreen",
+                  borderBottom: "1px cyan",
                   padding: "0.75rem",
                   textAlign: "left",
                 }}
               >
                 <Typography
                   variant="small"
-                  color="blue-gray"
+                  color="white"
                   className="font-bold leading-none"
                   style={{
                     backgroundColor: "black",
-                    borderBottom: "1px solid limegreen",
-                    padding: "0.75rem",
+                    borderBottom: "5px solid limegreen",
+                    padding: "1rem",
                     textAlign: "left",
                   }}
                 >

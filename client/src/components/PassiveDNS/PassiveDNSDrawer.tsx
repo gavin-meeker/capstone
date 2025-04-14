@@ -24,7 +24,13 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
   };
 
   if (isPending) {
-    return <Spinner className="h-10 w-10" />; //Show Spinner while data is loading
+    return (
+      <Spinner
+        className="h-10 w-10"
+        color="purple"
+        style={{ fontFamily: "monospace", color: "#f0f0f0" }}
+      />
+    ); //Show Spinner while data is loading
   }
 
   if (error) {
@@ -40,12 +46,21 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
           variant="h5"
           color="gray"
           //TODO: need to conditionally add class names (hover state) based on if there are dns records
+          style={{
+            fontFamily: "monospace",
+            color: "black",
+            cursor: "pointer",
+            fontWeight: "normal",
+          }}
           className="mb-8 cursor-pointer pr-4 font-normal hover:text-blue-400"
           onClick={handleOpen}
         >
           Passive DNS
-          {hasDnsRecords &&
-            ` (${data?.data[0].count.toLocaleString()} Records)`}
+          {hasDnsRecords && (
+            <span style={{ fontFamily: "monospace", color: "black" }}>
+              ({data?.data[0].count.toLocaleString()} Records)
+            </span>
+          )}
         </Typography>
         <div className="flex items-center">
           <Typography variant="small" className="mr-2">

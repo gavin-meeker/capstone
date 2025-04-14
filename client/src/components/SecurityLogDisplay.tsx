@@ -1,87 +1,180 @@
-import React, { useEffect, useState } from "react";
 import { api } from "../utils/api";
+import { Ioc } from "../types.ts";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
-const SOURCES = ["azure", "okta", "prisma", "helios", "email"];
-//return actual information affiliated with it
-type SecurityLogsDisplayProps = {
-  ioc: any; // Ideally use your actual Ioc type
+type SecurityLogDisplayProps = {
+  ioc: Ioc;
 };
 
-const SecurityLogsDisplay: React.FC<SecurityLogsDisplayProps> = ({ ioc }) => {
-  const [logsBySource, setLogsBySource] = useState<Record<string, any[]>>({});
-  const [loading, setLoading] = useState(true);
+type SecurityLog = {
+  timestamp: string;
+  key: string;
+  logType: string;
+};
 
-  const iocKey = ioc?.key || ioc?.threat?.indicator?.description;
+const SECURITY_SOURCES = ["azure", "okta", "prisma", "helios", "email"];
 
-  useEffect(() => {
-    if (!iocKey) {
-      console.warn("⚠️ No IOC key provided");
-      return;
-    }
+/* Added Styling */
+const retroFont: React.CSSProperties = { fontFamily: "monospace" };
+const retroGreen: React.CSSProperties = { color: "#00ff00" };
+const darkBackground: React.CSSProperties = { backgroundColor: "#000000" };
+const darkSeparator: React.CSSProperties = { borderBottom: "1px solid #333" };
+const greenSeparator: React.CSSProperties = {
+  borderBottom: "1px solid #00ff00",
+};
+const tableSpacing: React.CSSProperties = { padding: "0.5rem" };
+const leftAlign: React.CSSProperties = { textAlign: "left" };
+const smallFontSize: React.CSSProperties = { fontSize: "0.8rem" };
+const marginTopSmall: React.CSSProperties = { marginTop: "0.5rem" };
+const collapseBorders: React.CSSProperties = { borderCollapse: "collapse" };
+const fullWidth: React.CSSProperties = { width: "100%" };
 
-    //this is to query all sources Query all sources
-    // curl -s -u 'user:pass' http://localhost:7000/oil/1.2.3.4
+const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
+  const iocKey = getIocKey(ioc);
 
-    const fetchLogs = async () => {
-      setLoading(true);
-      const logsMap: Record<string, any[]> = {};
+  const { data, isPending } = useQuery({
+    queryKey: ["securityLogs", iocKey],
+    queryFn: () => api.post(`thecount/oil/${iocKey}`),
+  });
 
-      await Promise.all(
-        SOURCES.map(async (source) => {
-          try {
-            const path = `/oil/${source}/${iocKey}`;
-            console.log(`🔍 Fetching: ${path}`);
-            const response = await api.get(path);
-            logsMap[source] = response?.data || [];
-          } catch (err) {
-            console.warn(`❌ Failed for ${source}:`, err);
-            logsMap[source] = [];
-          }
+  const filteredLogs =
+    data?.data &&
+    data?.data
+      .filter((log: any) => SECURITY_SOURCES.includes(log.oil))
+      .filter((log: any) => {
+        const valuesToMatch = [
+          log.key,
+          log.source?.ip,
+          log.client?.ip,
+          log.email?.to?.address,
+          log.userPrincipalName,
+          log.user?.email,
+        ];
+        return valuesToMatch.includes(iocKey);
+      })
+      .map(
+        (log: any): SecurityLog => ({
+          timestamp: log.timestamp || log["@timestamp"] || "—",
+          key: iocKey, // ✅ Override key to show searched IOC
+          logType: log.oil || "—",
         }),
       );
 
-      setLogsBySource(logsMap);
-      setLoading(false);
-    };
-
-    fetchLogs();
-  }, [iocKey]);
-
-  if (!iocKey) return <p>⚠️ No IOC selected.</p>;
+  if (!iocKey)
+    return (
+      <p style={{ ...retroFont, ...retroGreen }}>⚠️ No IOC key provided.</p>
+    );
+  if (isPending)
+    return <p style={{ ...retroFont, ...retroGreen }}>Loading logs...</p>;
 
   return (
-    <div className="space-y-6">
-      <h3 className="text-lg font-semibold">
-        Security Logs for: <code>{iocKey}</code>
-      </h3>
-
-      {loading ? (
-        <p>Loading logs...</p>
+    <div style={{ ...darkBackground, padding: "1rem" }}>
+      <h3 style={{ ...retroFont, ...retroGreen }}>Security Logs</h3>
+      {filteredLogs.length === 0 ? (
+        <p style={{ ...retroFont, ...retroGreen }}>
+          No security logs affiliated with this IOC.
+        </p>
       ) : (
-        SOURCES.map((source) => (
-          <div key={source}>
-            <h4 className="text-md mb-1 font-bold">
-              {logsBySource[source]?.length
-                ? `✅ ${source.toUpperCase()}`
-                : `❌ ${source.toUpperCase()} — No logs found`}
-            </h4>
-
-            {logsBySource[source]?.length > 0 && (
-              <ul className="ml-4 list-disc text-sm">
-                {logsBySource[source].map((log, idx) => (
-                  <li key={idx}>
-                    <pre className="whitespace-pre-wrap break-all rounded bg-gray-100 p-2">
-                      {JSON.stringify(log, null, 2)}
-                    </pre>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))
+        <table
+          style={{
+            ...retroFont,
+            ...retroGreen,
+            ...collapseBorders,
+            ...fullWidth,
+            ...marginTopSmall,
+            ...smallFontSize,
+          }}
+        >
+          <thead>
+            <tr>
+              <th
+                style={{
+                  ...retroFont,
+                  ...retroGreen,
+                  ...greenSeparator,
+                  ...tableSpacing,
+                  ...leftAlign,
+                }}
+              >
+                Timestamp
+              </th>
+              <th
+                style={{
+                  ...retroFont,
+                  ...retroGreen,
+                  ...greenSeparator,
+                  ...tableSpacing,
+                  ...leftAlign,
+                }}
+              >
+                Key
+              </th>
+              <th
+                style={{
+                  ...retroFont,
+                  ...retroGreen,
+                  ...greenSeparator,
+                  ...tableSpacing,
+                  ...leftAlign,
+                }}
+              >
+                Oil
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredLogs.map((log: SecurityLog) => (
+              <tr key={log.key + log.logType}>
+                <td
+                  style={{
+                    ...retroFont,
+                    ...retroGreen,
+                    ...darkSeparator,
+                    ...tableSpacing,
+                  }}
+                >
+                  {log.timestamp}
+                </td>
+                <td
+                  style={{
+                    ...retroFont,
+                    ...retroGreen,
+                    ...darkSeparator,
+                    ...tableSpacing,
+                  }}
+                >
+                  {log.key}
+                </td>
+                <td
+                  style={{
+                    ...retroFont,
+                    ...retroGreen,
+                    ...darkSeparator,
+                    ...tableSpacing,
+                  }}
+                >
+                  {log.logType}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
 };
+function getIocKey(ioc: Ioc): string {
+  const rawIocKey = ioc?.threat?.indicator?.description;
+  if (rawIocKey) {
+    try {
+      const url = new URL(rawIocKey);
+      return url.hostname; // strips protocol + path from URLs
+    } catch {
+      return rawIocKey; // not a URL, use as-is (e.g., IP, email)
+    }
+  }
+  return "";
+}
 
-export default SecurityLogsDisplay;
+export default SecurityLogDisplay;

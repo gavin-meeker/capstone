@@ -9,6 +9,7 @@ import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
 import SecurityLogDisplay from "./SecurityLogDisplay.tsx";
 import NetFlowTable from "./Netflow/NetFlowTable.tsx";
+import CopyIcon from "./svgs/CopyIcon.tsx";
 
 type IocDrawerProps = {
   ioc: Ioc;
@@ -27,7 +28,6 @@ type OilResponse = {
 const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
   return (
     <>
-      {/* TODO: would be cool to find a way to fix the background for drawer when scrolling */}
       <Drawer
         placement={"right"}
         size={800}
@@ -45,26 +45,7 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         <div className="mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                className="size-6 text-gray-400 hover:cursor-pointer"
-                style={{ color: "#a1a1aa" }}
-                onClick={() =>
-                  navigator.clipboard.writeText(
-                    ioc.threat.indicator.description,
-                  )
-                }
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"
-                />
-              </svg>
+              <CopyIcon textToCopy={ioc.threat.indicator.description} />
               <Typography
                 variant="h3"
                 color="blue-gray"
@@ -103,6 +84,39 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           >
             [{ioc.threat.indicator.type}]
           </Typography>
+          {ioc.threat.indicator.type === "ipv4-addr" ||
+          ioc.threat.indicator.type === "ipv6-addr" ? (
+            <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
+              <a
+                target="_blank"
+                href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
+              >
+                Shodan
+              </a>
+              <a
+                target="_blank"
+                href={`https://search.censys.io/hosts/${ioc.threat.indicator.description}`}
+              >
+                Censys
+              </a>
+              <a
+                target="_blank"
+                href={`https://spur.us/context/${ioc.threat.indicator.description}`}
+              >
+                Spur
+              </a>
+              <a
+                target="_blank"
+                href={`https://bgpview.io/ip/${ioc.threat.indicator.description}`}
+              >
+                BGPView
+              </a>
+            </div>
+          ) : (
+            <p className="mt-2 text-sm italic text-gray-500">
+              External tools only available for IP addresses.
+            </p>
+          )}
         </div>
         <Typography
           variant="h5"
