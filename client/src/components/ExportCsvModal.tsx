@@ -51,17 +51,19 @@ const ExportCsvModal = ({
   return (
     <>
       <Dialog open={open} handler={handleOpen} size="sm">
-        <DialogHeader>
+        <DialogHeader style={{ color: "yellow" }}>
           Export to IOCs to CSV
-          <div className="ml-auto">
+          <div className="ml-auto" style={{ color: "white" }}>
             <Switch
+              style={{ color: "white" }}
               label="Defang?"
               checked={shouldDefang}
               onChange={(e) => handleDefangSwitch(e)}
+              color="blue"
             />
           </div>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody style={{ color: "white" }}>
           <div>
             {displayableIocs &&
               displayableIocs.map((ioc) => (
