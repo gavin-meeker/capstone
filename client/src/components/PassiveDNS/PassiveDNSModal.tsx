@@ -41,10 +41,13 @@ const PassiveDNSModal = ({
   return (
     <>
       <Dialog open={open} handler={handleOpen} size={"lg"}>
-        <DialogHeader>
+        <DialogHeader className="text-orange-500">
           DNS Records for: {truncateString(currentLookup)}
         </DialogHeader>
-        <DialogBody className="h-[42rem] overflow-scroll">
+        <DialogBody
+          className="h-[42rem] overflow-scroll"
+          style={{ color: "yellow" }}
+        >
           <Typography variant={"small"} className="block">
             Original Lookup:
             <span
@@ -56,7 +59,10 @@ const PassiveDNSModal = ({
               {`${ioc?.threat.indicator.description}`}
             </span>
           </Typography>
-          <table className="w-full min-w-max table-auto text-left">
+          <table
+            className="w-full min-w-max table-auto text-left"
+            style={{ color: "teal" }}
+          >
             <thead>
               <tr>
                 {tableHeaders.map((header) => {
@@ -64,10 +70,11 @@ const PassiveDNSModal = ({
                     <th
                       key={header}
                       className="border-b border-gray-100 bg-gray-200 p-4"
+                      style={{ color: "orange" }}
                     >
                       <Typography
                         variant="small"
-                        color="blue-gray"
+                        color="green"
                         className="font-bold leading-none"
                       >
                         {header}

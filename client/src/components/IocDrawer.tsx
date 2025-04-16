@@ -1,4 +1,9 @@
-import { Drawer, IconButton, Typography } from "@material-tailwind/react";
+import {
+  Drawer,
+  IconButton,
+  Typography,
+  Button,
+} from "@material-tailwind/react";
 import { truncateString } from "../utils/helpers";
 import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
@@ -29,7 +34,7 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         }}
         // overlayProps={{ className: "bg-black/25 shadow-none" }}
         className="max-h-screen overflow-y-auto p-4"
-        overlay={false}
+        overlay={true}
       >
         <div
           className="mb-6"
@@ -76,41 +81,37 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
             [{ioc.threat.indicator.type}]
           </Typography>
 
-          {(ioc.threat.indicator.type === "ipv4-addr" ||
-            ioc.threat.indicator.type === "ipv6-addr") && (
-            <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
+          <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
+            <a
+              target="_blank"
+              href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
+              style={{ textDecoration: "underline", fontFamily: "monospace" }}
+            >
+              Shodan
+            </a>
+            <a
+              target="_blank"
+              href={`https://search.censys.io/hosts/${ioc.threat.indicator.description}`}
+            >
+              Censys
+            </a>
+            <a
+              target="_blank"
+              href={`https://spur.us/context/${ioc.threat.indicator.description}`}
+            >
+              Spur
+            </a>
+            <a
+              target="_blank"
+              href={`https://bgpview.io/ip/${ioc.threat.indicator.description}`}
+            >
+              BGPView
+            </a>
+          </div>
 
-              <a
-                target="_blank"
-                href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
-                style={{ textDecoration: "underline", fontFamily: "monospace" }}
-              >
-                Shodan
-              </a>
-              <a
-                target="_blank"
-                href={`https://search.censys.io/hosts/${ioc.threat.indicator.description}`}
-              >
-                Censys
-              </a>
-              <a
-                target="_blank"
-                href={`https://spur.us/context/${ioc.threat.indicator.description}`}
-              >
-                Spur
-              </a>
-              <a
-                target="_blank"
-                href={`https://bgpview.io/ip/${ioc.threat.indicator.description}`}
-              >
-                BGPView
-              </a>
-            </div>
-          ) : (
-            <p className="mt-2 text-sm italic text-white">
-              External tools only available for IP addresses.
-            </p>
-          )}
+          <p className="mt-2 text-sm italic text-white">
+            External tools only available for IP addresses.
+          </p>
         </div>
         <Typography
           variant="h5"
@@ -128,11 +129,11 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
             color: "limegreen",
             fontFamily: "monospace",
             textAlign: "left",
-            padding: "1rem",
+            textIndent: ".75rem",
+            textSizeAdjust: "1rem",
+            position: "relative",
+            top: "40px",
           }}
-
-          className="mb-4 pr-4 font-normal"
-          style={{ color: "gray", fontFamily: "monospace" }}
         >
           Netflow
         </Typography>

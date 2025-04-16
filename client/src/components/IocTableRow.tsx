@@ -38,12 +38,16 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
       </td>
 
       {/* ELK Link Cell */}
-      <td className="border-b border-gray-300 py-4 pl-4">
+      <td
+        className="border-b border-gray-300 py-4 pl-4"
+        style={{ borderBottomColor: "grey" }}
+      >
         <a
           href="https://cloud.elastic.co/login"
           target="_blank"
           rel="noopener noreferrer"
           className="text-blue-600 hover:underline"
+          style={{ color: "teal" }}
         >
           ELK
         </a>

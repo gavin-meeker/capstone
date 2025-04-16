@@ -82,7 +82,14 @@ const NetFlowTable: React.FC<NetFlowTableProps> = ({ ioc }) => {
 
   if (netflowData.length === 0) {
     return (
-      <Typography className="my-2 italic text-gray-700">
+      <Typography
+        className="my-2 italic text-gray-700"
+        style={{
+          color: "limegreen",
+          fontFamily: "monospace",
+          padding: ".75rem",
+        }}
+      >
         No network flow data found for {iocKey}.
       </Typography>
     );
@@ -94,30 +101,54 @@ const NetFlowTable: React.FC<NetFlowTableProps> = ({ ioc }) => {
         <table className="w-full table-auto border-collapse text-sm">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800">
+              <th
+                className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800"
+                style={{ color: "limegreen", backgroundColor: "#1e1e1e" }}
+              >
                 Timestamp
               </th>
-              <th className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800">
+              <th
+                className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800"
+                style={{ color: "limegreen", backgroundColor: "#1e1e1e" }}
+              >
                 Source
               </th>
-              <th className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800">
+              <th
+                className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800"
+                style={{ color: "limegreen", backgroundColor: "#1e1e1e" }}
+              >
                 Port
               </th>
-              <th className="border-b border-gray-300 px-3 py-2 text-center font-medium text-gray-800">
+              <th
+                className="border-b border-gray-300 px-3 py-2 text-center font-medium text-gray-800"
+                style={{ color: "limegreen", backgroundColor: "#1e1e1e" }}
+              >
                 →
               </th>
-              <th className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800">
+              <th
+                className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800"
+                style={{ color: "limegreen", backgroundColor: "#1e1e1e" }}
+              >
                 Destination
               </th>
-              <th className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800">
+              <th
+                className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800"
+                style={{ color: "limegreen", backgroundColor: "#1e1e1e" }}
+              >
                 Port
               </th>
-              <th className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800">
+              <th
+                className="border-b border-gray-300 px-3 py-2 text-left font-medium text-gray-800"
+                style={{ color: "limegreen", backgroundColor: "#1e1e1e" }}
+              >
                 Protocol
               </th>
             </tr>
           </thead>
-          <tbody className="text-gray-700">
+          <tbody
+            className="text-gray-700"
+            style={{ color: "limegreen", fontFamily: "monospace" }}
+          >
             {netflowData.map((flow, index) => {
               // Format timestamp
               const timestamp = formatDate(flow.event?.start || "");
@@ -130,6 +161,7 @@ const NetFlowTable: React.FC<NetFlowTableProps> = ({ ioc }) => {
                 <tr
                   key={index}
                   className="border-b border-gray-200 hover:bg-gray-50"
+                  style={{ textAlign: "left", padding: "1rem" }}
                 >
                   <td className="px-3 py-1">{timestamp}</td>
                   <td
