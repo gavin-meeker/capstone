@@ -3,10 +3,8 @@ import { Typography } from "@material-tailwind/react";
 
 type PassiveDNSRowProps = {
   record: PassiveDnsRecord;
-  setCurrentLookup:
-    | ((value: string | ((prevState: string) => string)) => void)
-    | undefined;
-  currentLookup?: string | undefined;
+  setCurrentLookup: (value: string | ((prevState: string) => string)) => void;
+  currentLookup: string | undefined;
 };
 
 const PassiveDnsRow = ({

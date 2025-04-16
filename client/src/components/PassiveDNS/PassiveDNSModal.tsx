@@ -15,9 +15,9 @@ import { Ioc } from "../../types.ts";
 type PassiveDNSModalProps = {
   open: boolean;
   handleOpen: () => void;
-  setCurrentLookup?: (value: ((prevState: string) => string) | string) => void;
-  currentLookup?: string;
-  ioc?: Ioc;
+  setCurrentLookup: (value: ((prevState: string) => string) | string) => void;
+  currentLookup: string;
+  ioc: Ioc;
 };
 
 const PassiveDNSModal = ({
