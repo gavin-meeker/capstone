@@ -5,18 +5,27 @@
 body {
   background-color: #1e1e1e;
   color: #f0f0f0;
-  font-family: monospace, sans-serif;
+  font-family: monospace;
 }
 
-/* Style for the label of the retro textarea */
 .retro-textarea + div > label {
-  color: #00ff00 !important;
+  color: #00ff00;
   font-family: monospace !important;
   margin-top: 0.5rem;
 }
 
-/* Style for the label when the textarea is focused */
 .retro-textarea:focus + div > label {
   color: #00ff00 !important;
-  font-family: monospace !important;
+  font-family: monospace;
+}
+
+.p-4 {
+  background-color: #1e1e1e;
+}
+
+.ml-auto {
+  color: white;
+  background-color: #1e1e1e;
+  text-decoration-color: white !important;
+  font-family: monospace;
 }
