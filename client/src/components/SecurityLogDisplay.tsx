@@ -20,7 +20,6 @@ const SECURITY_SOURCES = ["azure", "okta", "prisma", "helios", "email"];
 const retroFont: React.CSSProperties = { fontFamily: "monospace" };
 const retroGreen: React.CSSProperties = { color: "#00ff00" };
 const darkBackground: React.CSSProperties = { backgroundColor: "#000000" };
-const darkSeparator: React.CSSProperties = { borderBottom: "1px solid #333" };
 const greenSeparator: React.CSSProperties = {
   borderBottom: "1px solid #00ff00",
 };
@@ -42,30 +41,16 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
   const extractTooltipInfo = (log: any): string[] => {
     const lines: string[] = [];
 
-    // Common fields
-    if (log.email?.from?.address) lines.push(`From: ${log.email.from.address}`);
-    if (log.email?.to?.address) lines.push(`To: ${log.email.to.address}`);
-    if (log.email?.subject) lines.push(`Subject: ${log.email.subject}`);
-    if (log.megaoil?.pipeline) lines.push(`Pipeline: ${log.megaoil.pipeline}`);
-    if (log.event?.module) lines.push(`Module: ${log.event.module}`);
-    if (log.event?.message) lines.push(`Event: ${log.event.message}`);
-    if (log.userPrincipalName)
-      lines.push(`Principal: ${log.userPrincipalName}`);
-    if (log.userDisplayName) lines.push(`User: ${log.userDisplayName}`);
-    if (log.coxAccountName) lines.push(`Cox Account: ${log.coxAccountName}`);
-    if (log.displayName) lines.push(`Device: ${log.displayName}`);
-    if (log.client?.ip) lines.push(`Client IP: ${log.client.ip}`);
-    if (log.client?.asn) lines.push(`ASN: ${log.client.asn}`);
-    if (log.Suricata?.Signature)
-      lines.push(`Suricata Sig: ${log.Suricata.Signature}`);
-    if (log.rule?.name) lines.push(`Rule: ${log.rule.name}`);
+    // Extract common and Okta-specific fields using the configuration
+    for (const key in tooltipConfig) {
+      const config = tooltipConfig[key];
+      const value = key.split(".").reduce((obj, k) => obj?.[k], log);
+      if (value) {
+        lines.push(`${config.label}: ${value}`);
+      }
+    }
 
-    // Okta-specific fields
-    if (log.displayMessage) lines.push(`Message: ${log.displayMessage}`);
-    if (log.actor?.displayName) lines.push(`Actor: ${log.actor.displayName}`);
-    if (log.actor?.alternateId)
-      lines.push(`Actor Email: ${log.actor.alternateId}`);
-    if (log.client?.ipAddress) lines.push(`Client IP: ${log.client.ipAddress}`);
+    // Handle the 'target' array specifically
     if (Array.isArray(log.target)) {
       log.target.forEach((t, idx) => {
         if (t.displayName) lines.push(`Target ${idx + 1}: ${t.displayName}`);
@@ -187,6 +172,34 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
       )}
     </div>
   );
+};
+
+type TooltipConfig = {
+  [key: string]: {
+    label: string;
+    path?: string; // Optional path for nested properties
+  };
+};
+
+const tooltipConfig: TooltipConfig = {
+  "email.from.address": { label: "From" },
+  "email.to.address": { label: "To" },
+  "email.subject": { label: "Subject" },
+  "megaoil.pipeline": { label: "Pipeline" },
+  "event.module": { label: "Module" },
+  "event.message": { label: "Event" },
+  userPrincipalName: { label: "Principal" },
+  userDisplayName: { label: "User" },
+  coxAccountName: { label: "Cox Account" },
+  displayName: { label: "Device" },
+  "client.ip": { label: "Client IP" },
+  "client.asn": { label: "ASN" },
+  "Suricata.Signature": { label: "Suricata Sig" },
+  "rule.name": { label: "Rule" },
+  displayMessage: { label: "Message" },
+  "actor.displayName": { label: "Actor" },
+  "actor.alternateId": { label: "Actor Email" },
+  "client.ipAddress": { label: "Client IP" },
 };
 
 function getIocKey(ioc: Ioc): string {
