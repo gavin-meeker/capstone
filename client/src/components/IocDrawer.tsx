@@ -1,14 +1,9 @@
-import {
-  Button,
-  Drawer,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
+import { Drawer, IconButton, Typography } from "@material-tailwind/react";
 import { truncateString } from "../utils/helpers";
 import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
 import SecurityLogDisplay from "./SecurityLogDisplay.tsx";
-import NetFlowTable from "./Netflow/NetFlowTable.tsx";
+import NetFlowTable from "./NetFlowTable.tsx";
 import CopyIcon from "./svgs/CopyIcon.tsx";
 
 type IocDrawerProps = {
@@ -17,14 +12,6 @@ type IocDrawerProps = {
   isOpen: boolean;
 };
 
-type OilData = {
-  oil: string;
-  [key: string]: any; // for other fields you're not directly using
-};
-
-type OilResponse = {
-  data: OilData[];
-};
 const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
   return (
     <>
@@ -41,6 +28,7 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           borderLeft: "1px solid #222",
         }}
         // overlayProps={{ className: "bg-black/25 shadow-none" }}
+        className="max-h-screen overflow-y-auto p-4"
         overlay={false}
       >
         <div
@@ -87,9 +75,11 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           >
             [{ioc.threat.indicator.type}]
           </Typography>
-          {ioc.threat.indicator.type === "ipv4-addr" ||
-          ioc.threat.indicator.type === "ipv6-addr" ? (
-            <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-700 underline">
+
+          {(ioc.threat.indicator.type === "ipv4-addr" ||
+            ioc.threat.indicator.type === "ipv6-addr") && (
+            <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
+
               <a
                 target="_blank"
                 href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
@@ -140,6 +130,9 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
             textAlign: "left",
             padding: "1rem",
           }}
+
+          className="mb-4 pr-4 font-normal"
+          style={{ color: "gray", fontFamily: "monospace" }}
         >
           Netflow
         </Typography>

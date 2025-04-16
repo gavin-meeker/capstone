@@ -7,29 +7,32 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { api } from "../../utils/api";
-import { Ioc } from "../../types.ts";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { truncateString } from "../../utils/helpers.ts";
 import PassiveDNSRow from "./PassiveDNSRow.tsx";
+import { Ioc } from "../../types.ts";
 
 type PassiveDNSModalProps = {
-  ioc: Ioc;
   open: boolean;
   handleOpen: () => void;
-  useSummary: boolean; // Add useSummary Prop
+  setCurrentLookup: (value: ((prevState: string) => string) | string) => void;
+  currentLookup: string;
+  ioc: Ioc;
 };
 
-const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
+const PassiveDNSModal = ({
+  open,
+  handleOpen,
+  setCurrentLookup,
+  currentLookup,
+  ioc,
+}: PassiveDNSModalProps) => {
   //TODO: need to implement pivoting for when a user clicks on a on dns record and it swaps the search
   //TODO: need to fix rendering twice
-  const [currentLookup, setCurrentLookup] = useState(
-    ioc.threat.indicator.description,
-  );
 
   const { data } = useQuery({
-    queryKey: ["passiveDnsItems", ioc.threat.indicator.description],
-    queryFn: () => getPassiveDnsRecords(currentLookup),
+    queryKey: ["passiveDnsItems", currentLookup],
+    queryFn: ({ queryKey }) => getPassiveDnsRecords(queryKey[1]),
   });
 
   const currentDns = data?.data || undefined;
@@ -37,11 +40,22 @@ const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
 
   return (
     <>
-      <Dialog open={open} handler={handleOpen}>
+      <Dialog open={open} handler={handleOpen} size={"lg"}>
         <DialogHeader>
           DNS Records for: {truncateString(currentLookup)}
         </DialogHeader>
         <DialogBody className="h-[42rem] overflow-scroll">
+          <Typography variant={"small"} className="block">
+            Original Lookup:
+            <span
+              className="cursor-pointer font-bold text-blue-500 underline"
+              onClick={() =>
+                setCurrentLookup(ioc?.threat.indicator.description)
+              }
+            >
+              {`${ioc?.threat.indicator.description}`}
+            </span>
+          </Typography>
           <table className="w-full min-w-max table-auto text-left">
             <thead>
               <tr>
@@ -67,7 +81,13 @@ const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
               {currentDns &&
                 currentDns.map(({ dns }) =>
                   dns.answers.map((record) => {
-                    return <PassiveDNSRow record={record} />;
+                    return (
+                      <PassiveDNSRow
+                        record={record}
+                        setCurrentLookup={setCurrentLookup}
+                        currentLookup={currentLookup}
+                      />
+                    );
                   }),
                 )}
             </tbody>
@@ -76,9 +96,6 @@ const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
         <DialogFooter className="space-x-2">
           <Button variant="text" color="blue-gray" onClick={handleOpen}>
             cancel
-          </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
-            confirm
           </Button>
         </DialogFooter>
       </Dialog>

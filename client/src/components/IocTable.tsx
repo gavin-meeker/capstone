@@ -10,7 +10,6 @@ type IocTableProps = {
 
 const IocTable = ({ iocArray }: IocTableProps) => {
   const [ioc, setCurrentIoc] = useState<Ioc | undefined>(undefined);
-
   const [open, setOpen] = useState(false);
 
   const openDrawer = () => setOpen(true);
@@ -50,6 +49,15 @@ const IocTable = ({ iocArray }: IocTableProps) => {
                   }}
                 >
                   IOC List
+                </Typography>
+              </th>
+              <th className="border-b border-gray-100 bg-gray-200 p-4">
+                <Typography
+                  variant="small"
+                  color="blue-gray"
+                  className="font-bold leading-none"
+                >
+                  Security Logs
                 </Typography>
               </th>
             </tr>

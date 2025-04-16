@@ -35,7 +35,7 @@ const ExportCsvModal = ({
   };
 
   const handleIocCsv = async () => {
-    const iocCsvData = await getIocCsv(iocInput);
+    const iocCsvData = await getIocCsv(iocInput, shouldDefang);
     downloadCSV(iocCsvData.data.fileName, iocCsvData.data.csv);
   };
 
