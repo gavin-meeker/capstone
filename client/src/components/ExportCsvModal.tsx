@@ -51,17 +51,19 @@ const ExportCsvModal = ({
   return (
     <>
       <Dialog open={open} handler={handleOpen} size="sm">
-        <DialogHeader>
+        <DialogHeader style={{ color: "yellow" }}>
           Export to IOCs to CSV
-          <div className="ml-auto">
+          <div className="ml-auto" style={{ color: "white" }}>
             <Switch
+              style={{ color: "white" }}
               label="Defang?"
               checked={shouldDefang}
               onChange={(e) => handleDefangSwitch(e)}
+              color="blue"
             />
           </div>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody style={{ color: "white" }}>
           <div>
             {displayableIocs &&
               displayableIocs.map((ioc) => (
@@ -76,14 +78,27 @@ const ExportCsvModal = ({
         </DialogBody>
         <DialogFooter>
           <Button
-            variant="text"
-            color="red"
+            variant="gradient"
+            color="black"
+            style={{
+              color: "red",
+              fontFamily: "monospace",
+              textDecorationColor: "black",
+            }}
             onClick={handleOpen}
             className="mr-1"
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleIocCsv}>
+          <Button
+            variant="gradient"
+            onClick={handleIocCsv}
+            style={{
+              color: "limegreen",
+              fontFamily: "monospace",
+              textDecorationColor: "black",
+            }}
+          >
             <span>Download CSV</span>
           </Button>
         </DialogFooter>
