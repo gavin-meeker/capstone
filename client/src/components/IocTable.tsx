@@ -15,6 +15,8 @@ const IocTable = ({ iocArray }: IocTableProps) => {
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
+  const tableHeaders = ["IOCs", "Passive DNS", "Security Logs"];
+
   return (
     <>
       <div className="mx-auto h-full w-5/6">
@@ -28,49 +30,30 @@ const IocTable = ({ iocArray }: IocTableProps) => {
         >
           <thead>
             <tr>
-              <th
-                className="border-b border-gray-100 bg-gray-200 p-4"
-                style={{
-                  backgroundColor: "black",
-                  borderBottom: "5px solid limegreen",
-                  padding: "0.75rem",
-                  textAlign: "left",
-                }}
-              >
-                <Typography
-                  variant="small"
-                  color="white"
-                  className="font-bold leading-none"
+              {tableHeaders.map((headerName) => (
+                <th
+                  className="border-b border-gray-100 bg-gray-200 p-4"
                   style={{
-                    padding: "1rem",
-                    fontFamily: "monospace",
+                    backgroundColor: "black",
+                    borderBottom: "5px solid limegreen",
+                    padding: "0.75rem",
                     textAlign: "left",
                   }}
                 >
-                  IOC List
-                </Typography>
-              </th>
-              <th
-                className="border-b border-gray-100 bg-gray-200 p-4"
-                style={{
-                  backgroundColor: "black",
-                  borderBottom: "5px solid limegreen",
-                  padding: "0.75rem",
-                  textAlign: "left",
-                }}
-              >
-                <Typography
-                  variant="small"
-                  color="white"
-                  style={{
-                    padding: "1rem",
-                    fontFamily: "monospace",
-                    textAlign: "left",
-                  }}
-                >
-                  Security Logs
-                </Typography>
-              </th>
+                  <Typography
+                    variant="small"
+                    color="white"
+                    className="font-bold leading-none"
+                    style={{
+                      padding: "1rem",
+                      fontFamily: "monospace",
+                      textAlign: "left",
+                    }}
+                  >
+                    {headerName}
+                  </Typography>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
