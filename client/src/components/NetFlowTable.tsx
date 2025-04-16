@@ -89,11 +89,7 @@ const NetFlowTable: React.FC<NetFlowTableProps> = ({ ioc }) => {
   }
 
   return (
-    <div className="mb-6 mt-6">
-      <Typography variant="h5" className="mb-2 font-medium text-gray-900">
-        Netflow Data for IOC: {iocKey}
-      </Typography>
-
+    <div className="mt-4">
       <div className="overflow-x-auto">
         <table className="w-full table-auto border-collapse text-sm">
           <thead>

@@ -1,9 +1,4 @@
-import {
-  Button,
-  Drawer,
-  IconButton,
-  Typography,
-} from "@material-tailwind/react";
+import { Drawer, IconButton, Typography } from "@material-tailwind/react";
 import { truncateString } from "../utils/helpers";
 import PassiveDNSDrawer from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { Ioc } from "../types.ts";
@@ -111,36 +106,13 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         <Typography
           variant="h5"
           color="gray"
-          className="mb-8 pr-4 font-normal"
+          className="mb-4 pr-4 font-normal"
           style={{ color: "gray", fontFamily: "monospace" }}
         >
           Netflow
         </Typography>
         <NetFlowTable ioc={ioc} />
         <PassiveDNSDrawer ioc={ioc} />
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="outlined"
-            style={{
-              color: "limegreen",
-              borderColor: "limegreen",
-              fontFamily: "monospace",
-            }}
-          >
-            Outlined Button
-          </Button>
-          <Button
-            size="sm"
-            style={{
-              backgroundColor: "limegreen",
-              color: "black",
-              fontFamily: "monospace",
-            }}
-          >
-            Filled button
-          </Button>
-        </div>
       </Drawer>
     </>
   );
