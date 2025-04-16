@@ -71,6 +71,7 @@ const PassiveDNSModal = ({
                       <PassiveDNSRow
                         record={record}
                         setCurrentLookup={setCurrentLookup}
+                        currentLookup={currentLookup}
                       />
                     );
                   }),
@@ -81,9 +82,6 @@ const PassiveDNSModal = ({
         <DialogFooter className="space-x-2">
           <Button variant="text" color="blue-gray" onClick={handleOpen}>
             cancel
-          </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
-            confirm
           </Button>
         </DialogFooter>
       </Dialog>

@@ -3,20 +3,34 @@ import { Typography } from "@material-tailwind/react";
 
 type PassiveDNSRowProps = {
   record: PassiveDnsRecord;
-  setCurrentLookup: (name: string) => void;
+  setCurrentLookup:
+    | ((value: string | ((prevState: string) => string)) => void)
+    | undefined;
+  currentLookup?: string | undefined;
 };
 
 const PassiveDnsRow = ({
   record: { type, data, name, event },
   setCurrentLookup,
+  currentLookup,
 }: PassiveDNSRowProps) => {
   return (
     <tr className="relative hover:bg-gray-50">
-      <td className="cursor-pointer border-b border-gray-300 py-4 pl-4 underline">
-        <Typography onClick={() => setCurrentLookup(name)}>{name}</Typography>
+      <td className={`border-b border-gray-300 py-4 pl-4`}>
+        <Typography
+          className={currentLookup !== name ? "cursor-pointer underline" : ""}
+          onClick={() => setCurrentLookup(name)}
+        >
+          {name}
+        </Typography>
       </td>
-      <td className="cursor-pointer border-b border-gray-300 py-4 pl-4 underline">
-        <Typography onClick={() => setCurrentLookup(data)}>{data}</Typography>
+      <td className={`border-b border-gray-300 py-4 pl-4`}>
+        <Typography
+          className={currentLookup !== data ? "cursor-pointer underline" : ""}
+          onClick={() => setCurrentLookup(data)}
+        >
+          {data}
+        </Typography>
       </td>
       <td className="border-b border-gray-300 py-4 pl-4">
         <Typography>{type}</Typography>
