@@ -10,12 +10,14 @@ import { api } from "../../utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { truncateString } from "../../utils/helpers.ts";
 import PassiveDNSRow from "./PassiveDNSRow.tsx";
+import { Ioc } from "../../types.ts";
 
 type PassiveDNSModalProps = {
   open: boolean;
   handleOpen: () => void;
   setCurrentLookup?: (value: ((prevState: string) => string) | string) => void;
   currentLookup?: string;
+  ioc?: Ioc;
 };
 
 const PassiveDNSModal = ({
@@ -23,6 +25,7 @@ const PassiveDNSModal = ({
   handleOpen,
   setCurrentLookup,
   currentLookup,
+  ioc,
 }: PassiveDNSModalProps) => {
   //TODO: need to implement pivoting for when a user clicks on a on dns record and it swaps the search
   //TODO: need to fix rendering twice
@@ -37,11 +40,22 @@ const PassiveDNSModal = ({
 
   return (
     <>
-      <Dialog open={open} handler={handleOpen}>
+      <Dialog open={open} handler={handleOpen} size={"lg"}>
         <DialogHeader>
           DNS Records for: {truncateString(currentLookup)}
         </DialogHeader>
         <DialogBody className="h-[42rem] overflow-scroll">
+          <Typography variant={"small"} className="block">
+            Original Lookup:
+            <span
+              className="cursor-pointer font-bold text-blue-500 underline"
+              onClick={() =>
+                setCurrentLookup(ioc?.threat.indicator.description)
+              }
+            >
+              {`${ioc?.threat.indicator.description}`}
+            </span>
+          </Typography>
           <table className="w-full min-w-max table-auto text-left">
             <thead>
               <tr>

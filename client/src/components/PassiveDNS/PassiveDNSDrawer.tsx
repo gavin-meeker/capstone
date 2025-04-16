@@ -66,6 +66,7 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
           handleOpen={handleOpen}
           setCurrentLookup={setCurrentLookup}
           currentLookup={currentLookup}
+          ioc={ioc}
         />
       )}
     </>
