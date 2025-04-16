@@ -20,36 +20,27 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         size={800}
         open={isOpen}
         onClose={closeDrawer}
-        className="p-4"
-        style={{
-          backgroundColor: "#333333",
-          color: "limegreen",
-          fontFamily: "monospace",
-          borderLeft: "1px solid #222",
-        }}
-        // overlayProps={{ className: "bg-black/25 shadow-none" }}
         className="max-h-screen overflow-y-auto p-4"
         overlay={false}
       >
-        <div
-          className="mb-6"
-          style={{ borderBottom: "1px solid #222", paddingBottom: "1rem" }}
-        >
+        <div className="mb-6">
           <div className="flex items-center justify-between">
-            <div
-              className="flex items-center gap-2"
-              style={{ color: "limegreen", fontFamily: "monospace" }}
-            >
+            <div className="flex items-center gap-2">
               <CopyIcon textToCopy={ioc.threat.indicator.description} />
               <Typography
                 variant="h3"
                 color="blue-gray"
-                style={{ color: "orange", fontFamily: "monospace" }}
+                style={{ color: "#2dd4bf", fontFamily: "monospace" }}
               >
                 {truncateString(ioc.threat.indicator.description)}
               </Typography>
             </div>
-            <IconButton variant="text" color="black" onClick={closeDrawer}>
+            <IconButton
+              variant="text"
+              color="blue-gray"
+              onClick={closeDrawer}
+              style={{ color: "#a1a1aa" }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -57,7 +48,6 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
                 strokeWidth={2}
                 stroke="currentColor"
                 className="h-5 w-5"
-                style={{ color: "#a1a1aa", fontFamily: "monospace" }}
               >
                 <path
                   strokeLinecap="round"
@@ -71,19 +61,16 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
             variant="small"
             color="blue-gray"
             className="block"
-            style={{ color: "yellow", fontFamily: "monospace" }}
+            style={{ color: "#a1a1aa", fontFamily: "monospace" }}
           >
             [{ioc.threat.indicator.type}]
           </Typography>
-
           {(ioc.threat.indicator.type === "ipv4-addr" ||
             ioc.threat.indicator.type === "ipv6-addr") && (
             <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
-
               <a
                 target="_blank"
                 href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
-                style={{ textDecoration: "underline", fontFamily: "monospace" }}
               >
                 Shodan
               </a>
@@ -106,10 +93,6 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
                 BGPView
               </a>
             </div>
-          ) : (
-            <p className="mt-2 text-sm italic text-white">
-              External tools only available for IP addresses.
-            </p>
           )}
         </div>
         <Typography
@@ -123,46 +106,13 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         <Typography
           variant="h5"
           color="gray"
-          className="mb-8 pr-4 font-normal"
-          style={{
-            color: "limegreen",
-            fontFamily: "monospace",
-            textAlign: "left",
-            padding: "1rem",
-          }}
-
           className="mb-4 pr-4 font-normal"
           style={{ color: "gray", fontFamily: "monospace" }}
         >
           Netflow
         </Typography>
         <NetFlowTable ioc={ioc} />
-        <div style={{ color: "limegreen", fontFamily: "monospace" }}></div>
         <PassiveDNSDrawer ioc={ioc} />
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="outlined"
-            style={{
-              backgroundColor: "limegreen",
-              color: "black",
-              borderColor: "limegreen",
-              fontFamily: "monospace",
-            }}
-          >
-            Outlined Button
-          </Button>
-          <Button
-            size="sm"
-            style={{
-              backgroundColor: "limegreen",
-              color: "black",
-              fontFamily: "monospace",
-            }}
-          >
-            Filled button
-          </Button>
-        </div>
       </Drawer>
     </>
   );
