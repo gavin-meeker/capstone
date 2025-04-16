@@ -172,7 +172,7 @@ const SecurityLogDisplay = ({ ioc }: SecurityLogDisplayProps) => {
                       {log.logType}
                     </span>
                     {log.tooltipInfo.length > 0 && (
-                      <div className="absolute left-0 top-full z-10 mt-1 hidden w-64 rounded border bg-white p-2 text-xs shadow-md group-hover:block">
+                      <div className="absolute left-0 top-full z-10 mt-1 hidden w-64 rounded border bg-white p-2 text-xs text-black shadow-md group-hover:block">
                         {log.tooltipInfo.map((line, i) => (
                           <div key={i}>{line}</div>
                         ))}

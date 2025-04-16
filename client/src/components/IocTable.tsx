@@ -32,7 +32,7 @@ const IocTable = ({ iocArray }: IocTableProps) => {
                 className="border-b border-gray-100 bg-gray-200 p-4"
                 style={{
                   backgroundColor: "black",
-                  borderBottom: "1px cyan",
+                  borderBottom: "5px solid limegreen",
                   padding: "0.75rem",
                   textAlign: "left",
                 }}
@@ -42,20 +42,31 @@ const IocTable = ({ iocArray }: IocTableProps) => {
                   color="white"
                   className="font-bold leading-none"
                   style={{
-                    backgroundColor: "black",
-                    borderBottom: "5px solid limegreen",
                     padding: "1rem",
+                    fontFamily: "monospace",
                     textAlign: "left",
                   }}
                 >
                   IOC List
                 </Typography>
               </th>
-              <th className="border-b border-gray-100 bg-gray-200 p-4">
+              <th
+                className="border-b border-gray-100 bg-gray-200 p-4"
+                style={{
+                  backgroundColor: "black",
+                  borderBottom: "5px solid limegreen",
+                  padding: "0.75rem",
+                  textAlign: "left",
+                }}
+              >
                 <Typography
                   variant="small"
-                  color="blue-gray"
-                  className="font-bold leading-none"
+                  color="white"
+                  style={{
+                    padding: "1rem",
+                    fontFamily: "monospace",
+                    textAlign: "left",
+                  }}
                 >
                   Security Logs
                 </Typography>
