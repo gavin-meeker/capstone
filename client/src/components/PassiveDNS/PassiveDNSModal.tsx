@@ -7,29 +7,29 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { api } from "../../utils/api";
-import { Ioc } from "../../types.ts";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { truncateString } from "../../utils/helpers.ts";
 import PassiveDNSRow from "./PassiveDNSRow.tsx";
 
 type PassiveDNSModalProps = {
-  ioc: Ioc;
   open: boolean;
   handleOpen: () => void;
-  useSummary: boolean; // Add useSummary Prop
+  setCurrentLookup?: (value: ((prevState: string) => string) | string) => void;
+  currentLookup?: string;
 };
 
-const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
+const PassiveDNSModal = ({
+  open,
+  handleOpen,
+  setCurrentLookup,
+  currentLookup,
+}: PassiveDNSModalProps) => {
   //TODO: need to implement pivoting for when a user clicks on a on dns record and it swaps the search
   //TODO: need to fix rendering twice
-  const [currentLookup, setCurrentLookup] = useState(
-    ioc.threat.indicator.description,
-  );
 
   const { data } = useQuery({
-    queryKey: ["passiveDnsItems", ioc.threat.indicator.description],
-    queryFn: () => getPassiveDnsRecords(currentLookup),
+    queryKey: ["passiveDnsItems", currentLookup],
+    queryFn: ({ queryKey }) => getPassiveDnsRecords(queryKey[1]),
   });
 
   const currentDns = data?.data || undefined;
@@ -67,7 +67,12 @@ const PassiveDNSModal = ({ open, handleOpen, ioc }: PassiveDNSModalProps) => {
               {currentDns &&
                 currentDns.map(({ dns }) =>
                   dns.answers.map((record) => {
-                    return <PassiveDNSRow record={record} />;
+                    return (
+                      <PassiveDNSRow
+                        record={record}
+                        setCurrentLookup={setCurrentLookup}
+                      />
+                    );
                   }),
                 )}
             </tbody>

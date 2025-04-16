@@ -1,4 +1,4 @@
-import { Switch, Typography, Spinner } from "@material-tailwind/react";
+import { Typography, Spinner } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../utils/api.js";
 import { Ioc } from "../../types.ts";
@@ -11,17 +11,19 @@ type PassiveDNSDrawerProps = {
 
 const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [useSummary, setUseSummary] = useState<boolean>(true); // Add Switch State for DNS
 
-  const handleOpen = () => setOpen(!open);
-  const { isPending, data, error } = useQuery({
-    queryKey: ["passiveDnsCount", ioc.threat.indicator.description, useSummary], // Add Switch to query key
-    queryFn: () => getPassiveDnsCount(ioc, useSummary),
-  });
+  const [currentLookup, setCurrentLookup] = useState(
+    ioc.threat.indicator.description,
+  );
 
-  const handleSummarySwitch = () => {
-    setUseSummary(!useSummary);
+  const handleOpen = () => {
+    setCurrentLookup(ioc.threat.indicator.description);
+    setOpen(!open);
   };
+  const { isPending, data, error } = useQuery({
+    queryKey: ["passiveDnsCount", ioc.threat.indicator.description],
+    queryFn: () => getPassiveDnsCount(ioc),
+  });
 
   if (isPending) {
     return (
@@ -47,39 +49,24 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
           color="gray"
           //TODO: need to conditionally add class names (hover state) based on if there are dns records
           style={{
-            fontFamily: "monospace",
-            color: "black",
-            cursor: "pointer",
             fontWeight: "normal",
           }}
-          className="mb-8 cursor-pointer pr-4 font-normal hover:text-blue-400"
+          className="mt-8 cursor-pointer pr-4 font-mono font-normal hover:text-blue-400"
           onClick={handleOpen}
         >
           Passive DNS
           {hasDnsRecords && (
-            <span style={{ fontFamily: "monospace", color: "black" }}>
-              ({data?.data[0].count.toLocaleString()} Records)
-            </span>
+            <span>({data?.data[0].count.toLocaleString()} Records)</span>
           )}
         </Typography>
-        <div className="flex items-center">
-          <Typography variant="small" className="mr-2">
-            Summary
-          </Typography>
-          <Switch
-            checked={useSummary}
-            onChange={handleSummarySwitch}
-            color="blue"
-          />
-        </div>
       </div>
       {hasDnsRecords && (
         <PassiveDNSModal
-          ioc={ioc}
           open={open}
           handleOpen={handleOpen}
-          useSummary={useSummary}
-        /> // Pass useSummary down to the modal
+          setCurrentLookup={setCurrentLookup}
+          currentLookup={currentLookup}
+        />
       )}
     </>
   );
@@ -99,12 +86,10 @@ type PassiveDnsSummary = {
 
 type PassiveDnsSummaryResult = PassiveDnsSummary[];
 
-const getPassiveDnsCount = async (ioc: Ioc, useSummary: boolean) => {
-  const summaryEndpoint = `thecount/pdns/${ioc.threat.indicator.description}/_summary`;
-  const fullEndpoint = `thecount/pdns/${ioc.threat.indicator.description}`;
-
-  const endpoint = useSummary ? summaryEndpoint : fullEndpoint;
-  return await api.post<PassiveDnsSummaryResult>(endpoint);
+const getPassiveDnsCount = async (ioc: Ioc) => {
+  return await api.post<PassiveDnsSummaryResult>(
+    `thecount/pdns/${ioc.threat.indicator.description}/_summary`,
+  );
 };
 
 export default PassiveDNSDrawer;
