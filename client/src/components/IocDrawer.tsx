@@ -25,7 +25,6 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         size={800}
         open={isOpen}
         onClose={closeDrawer}
-        className="p-4"
         style={{
           backgroundColor: "#333333",
           color: "limegreen",
@@ -140,30 +139,6 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         <NetFlowTable ioc={ioc} />
         <div style={{ color: "limegreen", fontFamily: "monospace" }}></div>
         <PassiveDNSDrawer ioc={ioc} />
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="outlined"
-            style={{
-              backgroundColor: "limegreen",
-              color: "black",
-              borderColor: "limegreen",
-              fontFamily: "monospace",
-            }}
-          >
-            Outlined Button
-          </Button>
-          <Button
-            size="sm"
-            style={{
-              backgroundColor: "limegreen",
-              color: "black",
-              fontFamily: "monospace",
-            }}
-          >
-            Filled button
-          </Button>
-        </div>
       </Drawer>
     </>
   );
