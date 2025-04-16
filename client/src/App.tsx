@@ -73,7 +73,7 @@ function App() {
         }}
       >
         <Textarea
-          label="Paste IOC"
+          label="Input IOC"
           resize={true}
           onChange={() => setIocInput(testData)}
           value={testData}
@@ -85,13 +85,13 @@ function App() {
             textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)",
             fontFamily: "monospace",
             borderColor: isInputError ? "#f43f5e" : "00ff00",
-            outlineColor: "cyan",
+            outlineColor: "black",
           }}
           labelProps={{
             style: {
-              color: "white",
+              color: "black",
               fontFamily: "monospace",
-              marginTop: "1rem",
+              marginTop: "0.5rem",
               display: "block",
             },
           }}
