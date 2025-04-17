@@ -1,4 +1,4 @@
-import { Typography } from "@material-tailwind/react";
+import { Button, Typography } from "@material-tailwind/react";
 import { Ioc } from "../types.ts";
 import { Dispatch, SetStateAction } from "react";
 import { truncateString } from "../utils/helpers.ts";
@@ -6,6 +6,7 @@ import CopyIcon from "./svgs/CopyIcon.tsx";
 import { api } from "../utils/api";
 import { PassiveDnsSummaryResult } from "./PassiveDNS/PassiveDNSDrawer.tsx";
 import { useQuery } from "@tanstack/react-query";
+import { getIocKey } from "./SecurityLogDisplay.tsx";
 
 type IocTableRowProps = {
   ioc: Ioc;
@@ -19,10 +20,20 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
     openDrawer();
   };
 
+  const iocKey = getIocKey(ioc);
+
+  const { data: logs } = useQuery({
+    queryKey: ["securityLogs", iocKey],
+    queryFn: () => api.post(`thecount/oil/${iocKey}`),
+  });
+
   const { isPending, data, error } = useQuery({
     queryKey: ["passiveDnsCount", ioc.threat.indicator.description],
     queryFn: () => getPassiveDnsCount(ioc),
   });
+
+  const uniqueLogs = getUniqueSecurityLogs(logs?.data);
+  console.log(uniqueLogs);
 
   const hasDnsRecords = !isPending && (data?.data?.length ?? 0) > 0;
 
@@ -41,6 +52,16 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
           >
             {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>
+        </div>
+      </td>
+      <td
+        className="border-b border-gray-300 py-4 pl-4"
+        style={{ borderBottomColor: "grey", padding: "0.75rem" }}
+      >
+        <div className="flex gap-2">
+          {uniqueLogs.map((uniqueLog) => (
+            <Button className="bg-green-500 p-2">{uniqueLog}</Button>
+          ))}
         </div>
       </td>
       <td
@@ -74,6 +95,15 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
     </tr>
   );
 };
+
+function getUniqueSecurityLogs(data) {
+  if (!data) return [];
+  const uniqueOils = new Set();
+  for (const item of data) {
+    uniqueOils.add(item.oil);
+  }
+  return Array.from(uniqueOils);
+}
 
 export const getPassiveDnsCount = async (ioc: Ioc) => {
   return await api.post<PassiveDnsSummaryResult>(
