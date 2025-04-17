@@ -59,10 +59,7 @@ const PassiveDNSModal = ({
               {`${ioc?.threat.indicator.description}`}
             </span>
           </Typography>
-          <table
-            className="w-full min-w-max table-auto text-left"
-            style={{ color: "teal" }}
-          >
+          <table className="w-full min-w-max table-auto text-left font-mono text-teal-300">
             <thead>
               <tr>
                 {tableHeaders.map((header) => {

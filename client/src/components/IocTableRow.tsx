@@ -33,7 +33,6 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
   });
 
   const uniqueLogs = getUniqueSecurityLogs(logs?.data);
-  console.log(uniqueLogs);
 
   const hasDnsRecords = !isPending && (data?.data?.length ?? 0) > 0;
 
@@ -47,8 +46,7 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
           <CopyIcon textToCopy={ioc.threat.indicator.description} />
           <Typography
             onClick={handleIocClick}
-            className="group-hover: text-shadow-[0_0_05px_rgba(0,0,0,0,8)]"
-            style={{ color: "Teal", fontFamily: "monospace" }}
+            className="group-hover: text-shadow-[0_0_05px_rgba(0,0,0,0,8)] font-mono text-teal-300"
           >
             {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>
@@ -60,7 +58,9 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
       >
         <div className="flex gap-2">
           {uniqueLogs.map((uniqueLog) => (
-            <Button className="bg-green-500 p-2">{uniqueLog}</Button>
+            <Button className="bg-green-500 p-2" key={uniqueLog}>
+              {uniqueLog}
+            </Button>
           ))}
         </div>
       </td>
@@ -70,8 +70,7 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
       >
         <Typography
           onClick={handleIocClick}
-          className="group-hover: text-shadow-[0_0_05px_rgba(0,0,0,0,8)]"
-          style={{ color: "Teal", fontFamily: "monospace" }}
+          className="group-hover: text-shadow-[0_0_05px_rgba(0,0,0,0,8)] font-mono text-teal-300"
         >
           {hasDnsRecords && <span>{data?.data[0].count.toLocaleString()}</span>}
         </Typography>
@@ -86,8 +85,7 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
           href="https://cloud.elastic.co/login"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
-          style={{ color: "teal" }}
+          className="font-mono text-teal-300 hover:underline"
         >
           ELK
         </a>

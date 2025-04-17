@@ -1,7 +1,5 @@
 import { PassiveDnsRecord } from "./PassiveDNSModal.tsx";
 import { Typography } from "@material-tailwind/react";
-import { Ioc } from "../../types.ts";
-import { api } from "../../utils/api";
 
 type PassiveDNSRowProps = {
   record: PassiveDnsRecord;

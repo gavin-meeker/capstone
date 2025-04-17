@@ -20,7 +20,7 @@ const IocTable = ({ iocArray }: IocTableProps) => {
   return (
     <>
       <div className="mx-auto h-full w-5/6">
-        <table className="w-full min-w-max table-auto text-left" style={{}}>
+        <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
               {tableHeaders.map((headerName) => (
