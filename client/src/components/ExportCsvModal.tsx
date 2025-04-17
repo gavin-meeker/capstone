@@ -55,11 +55,10 @@ const ExportCsvModal = ({
           Export to IOCs to CSV
           <div className="ml-auto" style={{ color: "white" }}>
             <Switch
-              style={{ color: "white" }}
               label="Defang?"
               checked={shouldDefang}
               onChange={(e) => handleDefangSwitch(e)}
-              color="blue"
+              color="green"
             />
           </div>
         </DialogHeader>
