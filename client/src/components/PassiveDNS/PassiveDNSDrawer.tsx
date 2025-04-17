@@ -50,9 +50,10 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
           //TODO: need to conditionally add class names (hover state) based on if there are dns records
           style={{
             fontWeight: "normal",
+            color: "limegreen",
+            fontFamily: "monospace",
           }}
           className="mt-8 cursor-pointer pr-4 font-mono font-normal hover:text-blue-400"
-          style={{ color: "limegreen", fontFamily: "monospace" }}
           onClick={handleOpen}
         >
           Passive DNS
@@ -86,9 +87,9 @@ type PassiveDnsSummary = {
   };
 };
 
-type PassiveDnsSummaryResult = PassiveDnsSummary[];
+export type PassiveDnsSummaryResult = PassiveDnsSummary[];
 
-const getPassiveDnsCount = async (ioc: Ioc) => {
+export const getPassiveDnsCount = async (ioc: Ioc) => {
   return await api.post<PassiveDnsSummaryResult>(
     `thecount/pdns/${ioc.threat.indicator.description}/_summary`,
   );

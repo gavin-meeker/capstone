@@ -3,6 +3,9 @@ import { Ioc } from "../types.ts";
 import { Dispatch, SetStateAction } from "react";
 import { truncateString } from "../utils/helpers.ts";
 import CopyIcon from "./svgs/CopyIcon.tsx";
+import { api } from "../utils/api";
+import { PassiveDnsSummaryResult } from "./PassiveDNS/PassiveDNSDrawer.tsx";
+import { useQuery } from "@tanstack/react-query";
 
 type IocTableRowProps = {
   ioc: Ioc;
@@ -16,11 +19,15 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
     openDrawer();
   };
 
+  const { isPending, data, error } = useQuery({
+    queryKey: ["passiveDnsCount", ioc.threat.indicator.description],
+    queryFn: () => getPassiveDnsCount(ioc),
+  });
+
+  const hasDnsRecords = !isPending && (data?.data?.length ?? 0) > 0;
+
   return (
-    <tr
-      className="relative cursor-pointer hover:bg-gray-50"
-      style={{ color: "limegreen", fontFamily: "monospace" }}
-    >
+    <tr className="relative cursor-pointer text-green-400 hover:bg-gray-50">
       <td
         className="border-b border-gray-300 py-4 pl-4"
         style={{ borderBottomColor: "grey", padding: "0.75rem" }}
@@ -35,6 +42,18 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
             {truncateString(ioc.threat.indicator.description, 30)}
           </Typography>
         </div>
+      </td>
+      <td
+        className="border-b border-gray-300 py-4 pl-4"
+        style={{ borderBottomColor: "grey", padding: "0.75rem" }}
+      >
+        <Typography
+          onClick={handleIocClick}
+          className="group-hover: text-shadow-[0_0_05px_rgba(0,0,0,0,8)]"
+          style={{ color: "Teal", fontFamily: "monospace" }}
+        >
+          {hasDnsRecords && <span>{data?.data[0].count.toLocaleString()}</span>}
+        </Typography>
       </td>
 
       {/* ELK Link Cell */}
@@ -56,4 +75,9 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
   );
 };
 
+export const getPassiveDnsCount = async (ioc: Ioc) => {
+  return await api.post<PassiveDnsSummaryResult>(
+    `thecount/pdns/${ioc.threat.indicator.description}/_summary`,
+  );
+};
 export default IocTableRow;

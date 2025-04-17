@@ -15,40 +15,20 @@ const IocTable = ({ iocArray }: IocTableProps) => {
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
-  const tableHeaders = ["IOCs", "Passive DNS", "Security Logs"];
+  const tableHeaders = ["IOCs", "Security Logs", "PDNS Count", "Placholders"];
 
   return (
     <>
       <div className="mx-auto h-full w-5/6">
-        <table
-          className="w-full min-w-max table-auto text-left"
-          style={{
-            color: "limegreen",
-            fontFamily: "monospace",
-            borderCollapse: "collapse",
-          }}
-        >
+        <table className="w-full min-w-max table-auto text-left" style={{}}>
           <thead>
             <tr>
               {tableHeaders.map((headerName) => (
-                <th
-                  className="border-b border-gray-100 bg-gray-200 p-4"
-                  style={{
-                    backgroundColor: "black",
-                    borderBottom: "5px solid limegreen",
-                    padding: "0.75rem",
-                    textAlign: "left",
-                  }}
-                >
+                <th className="border-b-4 border-green-400 !bg-black p-4">
                   <Typography
                     variant="small"
                     color="white"
-                    className="font-bold leading-none"
-                    style={{
-                      padding: "1rem",
-                      fontFamily: "monospace",
-                      textAlign: "left",
-                    }}
+                    className="font- py-4 text-left font-mono font-bold"
                   >
                     {headerName}
                   </Typography>

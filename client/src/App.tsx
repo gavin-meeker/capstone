@@ -73,49 +73,29 @@ function App() {
         }}
       >
         <Textarea
-          label="Input IOC"
           resize={true}
           onChange={() => setIocInput(testData)}
           value={testData}
           error={isInputError}
-          className="retro-textarea h-1/3"
+          variant="standard"
           style={{
             backgroundColor: "white",
-            color: "blue",
-            textShadow: "1px 1px 2px rgba(0, 0, 0, 0.8)",
-            fontFamily: "monospace",
-            borderColor: isInputError ? "#f43f5e" : "00ff00",
-            outlineColor: "black",
-          }}
-          labelProps={{
-            style: {
-              color: "black",
-              fontFamily: "monospace",
-              marginTop: "0.5rem",
-              display: "block",
-            },
+            padding: "1rem",
+            paddingTop: ".5rem",
+            borderRadius: "5px",
           }}
         />
         <div className="my-3 flex justify-center gap-5">
           <Button
+            className="color bg-green-400 font-mono text-gray-900"
             onClick={handleClick}
-            style={{
-              backgroundColor: "#00ff00",
-              color: "#1e1e1e",
-              fontFamily: "monospace",
-            }}
           >
             Extract IOC
           </Button>
           <Button
+            className="border-green-400 font-mono text-green-400"
             disabled={!data}
             onClick={handleOpen}
-            style={{
-              backgroundColor: "#1e1e1e",
-              color: "#00ff00",
-              fontFamily: "monospace",
-              borderColor: "limegreen",
-            }}
             variant="outlined"
           >
             Export IOC (.csv)
