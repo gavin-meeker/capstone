@@ -18,8 +18,9 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(express.text());
 app.use(express.json());
-app.use(errorHandler);
 
 app.use("/v1", router);
+
+app.use(errorHandler);
 
 export default app;
