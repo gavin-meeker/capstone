@@ -45,7 +45,7 @@ const PassiveDNSModal = ({
           DNS Records for: {truncateString(currentLookup)}
         </DialogHeader>
         <DialogBody
-          className="h-[42rem] overflow-scroll"
+          className="h-[42rem] overflow-scroll border-none"
           style={{ color: "yellow" }}
         >
           <Typography variant={"small"} className="block">

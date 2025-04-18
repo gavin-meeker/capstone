@@ -81,14 +81,17 @@ const IocTableRow = ({ ioc, setCurrentIoc, openDrawer }: IocTableRowProps) => {
         className="border-b border-gray-300 py-4 pl-4"
         style={{ borderBottomColor: "grey" }}
       >
-        <a
-          href="https://cloud.elastic.co/login"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-mono text-teal-300 hover:underline"
-        >
-          ELK
-        </a>
+        <div className="font-mono text-sm text-teal-300 hover:underline">
+          <a
+            href="https://cloud.elastic.co/login"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            [ ELK
+          </a>
+          <span> | </span>
+          <a>N ]</a>
+        </div>
       </td>
     </tr>
   );

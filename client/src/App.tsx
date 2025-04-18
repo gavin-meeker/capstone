@@ -33,14 +33,15 @@ This is an English sentence, and none of these words should be mistaken for user
 
 function App() {
   // TODO: need to remove this testData
-  const [iocInput, setIocInput] = useState(testData);
+  const [iocInput, setIocInput] = useState("");
   const [isInputError, setIsInputError] = useState(false);
 
-  const { data, refetch } = useQuery({
+  const { data, refetch, isError } = useQuery({
     queryKey: ["iocs"],
     // TODO: refactor this to use tanstack best practices. See https://tanstack.com/query/v4/docs/framework/react/guides/query-functions#query-function-variables
     queryFn: () => extractIocs(iocInput, false),
     enabled: false,
+    retry: false,
   });
 
   const [open, setOpen] = useState(false);
@@ -74,8 +75,7 @@ function App() {
       >
         <Textarea
           resize={true}
-          onChange={() => setIocInput(testData)}
-          value={testData}
+          onChange={(e) => setIocInput(e.target.value)}
           error={isInputError}
           variant="standard"
           style={{
@@ -101,6 +101,11 @@ function App() {
             Export IOC (.csv)
           </Button>
         </div>
+        {isError && (
+          <>
+            <div>No IOCs found</div>
+          </>
+        )}
         {data && (
           <ExportCsvModal
             open={open}

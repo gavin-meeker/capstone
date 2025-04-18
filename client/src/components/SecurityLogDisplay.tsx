@@ -18,7 +18,7 @@ const SECURITY_SOURCES = ["azure", "okta", "prisma", "helios", "email"];
 
 /* Added Styling */
 const retroFont: React.CSSProperties = { fontFamily: "monospace" };
-const retroGreen: React.CSSProperties = { color: "#66bb69" };
+const retroGreen: React.CSSProperties = { color: "#66BB68" };
 const darkBackground: React.CSSProperties = { backgroundColor: "#1e1e1e" };
 const greenSeparator: React.CSSProperties = {
   borderBottom: "1px solid #00ff00",

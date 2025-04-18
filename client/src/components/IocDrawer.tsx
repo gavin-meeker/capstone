@@ -5,6 +5,7 @@ import { Ioc } from "../types.ts";
 import SecurityLogDisplay from "./SecurityLogDisplay.tsx";
 import NetFlowTable from "./NetFlowTable.tsx";
 import CopyIcon from "./svgs/CopyIcon.tsx";
+import { ExternalTools } from "./ExternalTools.tsx";
 
 type IocDrawerProps = {
   ioc: Ioc;
@@ -22,13 +23,10 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         onClose={closeDrawer}
         style={{
           backgroundColor: "#333333",
-          color: "limegreen",
           fontFamily: "monospace",
-          borderLeft: "1px solid #222",
         }}
-        // overlayProps={{ className: "bg-black/25 shadow-none" }}
-        className="max-h-screen overflow-y-auto p-4"
-        overlay={true}
+        className="max-h-screen overflow-y-auto border-l-8 border-[#B1B102] p-4"
+        overlay={false}
       >
         <div
           className="mb-6"
@@ -37,7 +35,7 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           <div className="flex items-center justify-between">
             <div
               className="flex items-center gap-2"
-              style={{ color: "limegreen", fontFamily: "monospace" }}
+              style={{ fontFamily: "monospace" }}
             >
               <CopyIcon textToCopy={ioc.threat.indicator.description} />
               <Typography
@@ -75,37 +73,14 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
             [{ioc.threat.indicator.type}]
           </Typography>
 
-          <div className="mt-2 flex flex-wrap gap-3 text-sm text-blue-600 underline">
-            <a
-              target="_blank"
-              href={`https://www.shodan.io/search?query=${ioc.threat.indicator.description}`}
-              style={{ textDecoration: "underline", fontFamily: "monospace" }}
-            >
-              Shodan
-            </a>
-            <a
-              target="_blank"
-              href={`https://search.censys.io/hosts/${ioc.threat.indicator.description}`}
-            >
-              Censys
-            </a>
-            <a
-              target="_blank"
-              href={`https://spur.us/context/${ioc.threat.indicator.description}`}
-            >
-              Spur
-            </a>
-            <a
-              target="_blank"
-              href={`https://bgpview.io/ip/${ioc.threat.indicator.description}`}
-            >
-              BGPView
-            </a>
-          </div>
-
-          <p className="mt-2 text-sm italic text-white">
-            External tools only available for IP addresses.
-          </p>
+          {ioc.threat.indicator.type === "ipv4-addr" ||
+          ioc.threat.indicator.type === "ipv6-addr" ? (
+            <ExternalTools threat={ioc.threat} />
+          ) : (
+            <p className="mt-2 text-sm italic text-white">
+              External tools only available for IP addresses.
+            </p>
+          )}
         </div>
         <Typography
           variant="h5"
@@ -118,9 +93,8 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
         <Typography
           variant="h5"
           color="gray"
-          className="mb-8 pr-4 font-normal"
+          className="mb-14 pr-4 font-normal text-green-400"
           style={{
-            color: "limegreen",
             fontFamily: "monospace",
             textAlign: "left",
             textIndent: ".75rem",
@@ -132,7 +106,7 @@ const IocDrawer = ({ closeDrawer, ioc, isOpen }: IocDrawerProps) => {
           Netflow
         </Typography>
         <NetFlowTable ioc={ioc} />
-        <div style={{ color: "limegreen", fontFamily: "monospace" }}></div>
+        <div style={{ color: "#66BB67", fontFamily: "monospace" }}></div>
         <PassiveDNSDrawer ioc={ioc} />
       </Drawer>
     </>

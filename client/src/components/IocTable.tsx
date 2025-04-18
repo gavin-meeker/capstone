@@ -15,7 +15,7 @@ const IocTable = ({ iocArray }: IocTableProps) => {
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
-  const tableHeaders = ["IOCs", "Security Logs", "PDNS Count", "Placholders"];
+  const tableHeaders = ["IOCs", "Security Logs", "PDNS Count", "Placeholders"];
 
   return (
     <>

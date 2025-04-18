@@ -48,17 +48,14 @@ const PassiveDNSDrawer = ({ ioc }: PassiveDNSDrawerProps) => {
           variant="h5"
           color="gray"
           //TODO: need to conditionally add class names (hover state) based on if there are dns records
-          style={{
-            fontWeight: "normal",
-            color: "limegreen",
-            fontFamily: "monospace",
-          }}
-          className="mt-8 cursor-pointer pr-4 font-mono font-normal hover:text-blue-400"
+          className="mt-8 cursor-pointer pr-4 font-mono font-normal text-green-400"
           onClick={handleOpen}
         >
           Passive DNS
-          {hasDnsRecords && (
+          {hasDnsRecords ? (
             <span>({data?.data[0].count.toLocaleString()} Records)</span>
+          ) : (
+            <Typography className="font-mono">No PDNS Records</Typography>
           )}
         </Typography>
       </div>
