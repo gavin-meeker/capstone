@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "client": "npm run dev --prefix client",
-    "server": "npm run dev --prefix server",
+    "server": "npm run server --prefix server",
     "install-client-deps": "cd ./client; npm install",
     "install-server-deps": "cd ./server; npm install",
     "install-all-deps": "npm run install-client-deps && npm run install-server-deps"

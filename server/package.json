@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "NODE_ENV=development nodemon index.js",
     "prod": "NODE_ENV=production node index.js",
-    "start-the-count": "source ./count-fakeula/venv/bin/activate && python3 ./count-fakeula/main.py -d"
+    "start-the-count": "source ./count-fakeula/venv/bin/activate && python3 ./count-fakeula/main.py -d",
+    "server": "concurrently \"npm run prod\" \"npm run start-the-count\""
   },
   "keywords": [],
   "author": "",
