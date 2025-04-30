@@ -28,6 +28,16 @@ python main.py -d
 
 ### Setting Up Project
 
+**You will have to make a file named `.env.development.local` in the root directory of the project. You can paste the following into that file**
+
+```shell
+USERNAME="user"
+PASSWORD="pass"
+EXPRESS_PORT="8080"
+COUNT_PORT="7000"
+VITE_EXPRESS_PORT="8080"
+```
+
 **Make sure to run `npm install` in the following 3 directories**
 
 ```shell
